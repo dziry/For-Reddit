@@ -23,7 +23,7 @@ public class App extends Application {
     }
 
     public static Credentials getCredentials() {
-//        return Credentials.installedApp("<client ID>", "<redirect URL>");
-        throw new AssertionError("Don't forget to set your Credentials!");
+        return Credentials.installedApp("2WLdJr7h-UwC_A", "https://github.com/AdelLarbi/for-reddit.git");
+        //throw new AssertionError("Don't forget to set your Credentials!");
     }
 }
