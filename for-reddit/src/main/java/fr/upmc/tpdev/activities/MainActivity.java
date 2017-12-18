@@ -1,4 +1,4 @@
-package net.dean.jrawandroidexample.activities;
+package fr.upmc.tpdev.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,11 +13,11 @@ import net.dean.jraw.auth.AuthenticationState;
 import net.dean.jraw.auth.NoSuchTokenException;
 import net.dean.jraw.http.oauth.Credentials;
 import net.dean.jraw.http.oauth.OAuthException;
-import net.dean.jrawandroidexample.App;
-import net.dean.jrawandroidexample.R;
+import fr.upmc.tpdev.App;
+import fr.upmc.tpdev.R;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG = "JRAW_EXAMPLE";
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

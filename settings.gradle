@@ -1,1 +1,1 @@
-include ':example-app', ':library'
+include ':for-reddit', ':library'

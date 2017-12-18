@@ -13,13 +13,14 @@ import net.dean.jraw.http.oauth.InvalidScopeException;
 
 /**
  * This class enhances the RedditClient by taking advantage of the Android platform. Using the
- * {@link #AndroidRedditClient(Context)} constructor, the UserAgent may be automagically determined from the app's
- * manifest.
+ * {@link #AndroidRedditClient(Context)} constructor, the UserAgent may be automagically determined
+ * from the app's manifest.
  */
 public class AndroidRedditClient extends RedditClient {
+
     private static final String KEY_USER_AGENT_OVERRIDE = "net.dean.jraw.USER_AGENT_OVERRIDE";
-    private static final String KEY_REDDIT_USERNAME =     "net.dean.jraw.REDDIT_USERNAME";
-    private static final String PLATFORM =                "android";
+    private static final String KEY_REDDIT_USERNAME = "net.dean.jraw.REDDIT_USERNAME";
+    private static final String PLATFORM = "android";
 
     private static UserAgent getUserAgent(Context context) {
         try {
@@ -29,18 +30,23 @@ public class AndroidRedditClient extends RedditClient {
                     .metaData;
 
             // If there are no <meta-data> tags the Bundle will be null
-            if (bundle == null)
-                throw new IllegalStateException("Please specify a <meta-data> for either " + KEY_REDDIT_USERNAME +
-                        " or " + KEY_USER_AGENT_OVERRIDE);
+            if (bundle == null) {
+                throw new IllegalStateException("Please specify a <meta-data> for either " +
+                        KEY_REDDIT_USERNAME + " or " + KEY_USER_AGENT_OVERRIDE);
+            }
 
             String userAgent = bundle.getString(KEY_USER_AGENT_OVERRIDE, null);
-            if (userAgent != null)
+            if (userAgent != null) {
                 return UserAgent.of(userAgent);
+            }
 
             String username = bundle.getString(KEY_REDDIT_USERNAME, null);
-            if (username == null)
+            if (username == null) {
                 throw new IllegalStateException("No <meta-data> for " + KEY_REDDIT_USERNAME);
+            }
+
             return UserAgent.of(PLATFORM, context.getPackageName(), BuildConfig.VERSION_NAME, username);
+
         } catch (PackageManager.NameNotFoundException e) {
             throw new IllegalStateException("Could not find package metadata for own package", e);
         }
@@ -77,6 +83,7 @@ public class AndroidRedditClient extends RedditClient {
         if (getUserAgent().trim().isEmpty()) {
             throw new IllegalStateException("No UserAgent specified");
         }
+
         return super.execute(request);
     }
 }

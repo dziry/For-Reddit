@@ -1,4 +1,4 @@
-package net.dean.jrawandroidexample.activities;
+package fr.upmc.tpdev.activities;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -12,16 +12,13 @@ import android.widget.Toast;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
 import net.dean.jraw.http.NetworkException;
-import net.dean.jraw.http.oauth.Credentials;
 import net.dean.jraw.http.oauth.OAuthData;
 import net.dean.jraw.http.oauth.OAuthException;
 import net.dean.jraw.http.oauth.OAuthHelper;
-import net.dean.jrawandroidexample.App;
-import net.dean.jrawandroidexample.R;
+import fr.upmc.tpdev.App;
+import fr.upmc.tpdev.R;
 
 import java.net.URL;
-
-import okhttp3.HttpUrl;
 
 public class LoginActivity extends AppCompatActivity {
     @Override
