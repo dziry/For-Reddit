@@ -28,4 +28,10 @@
         android:layout_height="wrap_content"
         android:onClick="drawer" />
 
+    <Button
+        android:text="Tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="tab" />
+
 </LinearLayout>
