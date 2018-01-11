@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">JRAW Example</string>
+    <string name="app_name">for-reddit</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="title_activity_drawer">For Reddit</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
