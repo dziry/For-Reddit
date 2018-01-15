@@ -8,8 +8,13 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <include
+    <!--<include
         layout="@layout/app_bar_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+
+    <include
+        layout="@layout/activity_tabbed"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
