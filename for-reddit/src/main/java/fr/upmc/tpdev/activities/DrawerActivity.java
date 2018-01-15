@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fr.upmc.tpdev.R;
 
@@ -72,6 +73,7 @@ public class DrawerActivity extends AppCompatActivity
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        // ****** Tab layout.
     }
 
     @Override
@@ -97,14 +99,14 @@ public class DrawerActivity extends AppCompatActivity
         return true;
     }
 
+    final String[] SUBREDDIT_TAB = new String[]{"funny", "AskReddit", "todayilearned", "science", "worldnews", "pics", "IAmA", "gaming", "videos", "movies", "aww", "Music", "blog", "gifs", "news", "explainlikeimfive", "askscience", "EarthPorn", "books", "television", "mildlyinteresting", "LifeProTips"};
+
     private void addMenuItemInNavMenuDrawer() {
         NavigationView navView = findViewById(R.id.nav_view);
 
         Menu menu = navView.getMenu();
         MenuItem topCommunitiesItem = menu.getItem(0);
         SubMenu topCommunities = topCommunitiesItem.getSubMenu();
-
-        final String[] SUBREDDIT_TAB = new String[]{"funny", "AskReddit", "todayilearned", "science", "worldnews", "pics", "IAmA", "gaming", "videos", "movies", "aww", "Music", "blog", "gifs", "news", "explainlikeimfive", "askscience", "EarthPorn", "books", "television", "mildlyinteresting", "LifeProTips"};
 
         for (int i = 0; i < 10; i++) {
             topCommunities.add(R.id.gr_top_communities, i, Menu.NONE, "r/" + SUBREDDIT_TAB[i])
@@ -138,6 +140,7 @@ public class DrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Toast.makeText(getApplicationContext(), "id=" + SUBREDDIT_TAB[id], Toast.LENGTH_SHORT).show();
         /*if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -176,8 +179,8 @@ public class DrawerActivity extends AppCompatActivity
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static TabbedActivity.PlaceholderFragment newInstance(int sectionNumber) {
-            TabbedActivity.PlaceholderFragment fragment = new TabbedActivity.PlaceholderFragment();
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -187,6 +190,7 @@ public class DrawerActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
             View rootView = inflater.inflate(R.layout.fragment_tabbed, container, false);
             TextView textView = rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -208,7 +212,7 @@ public class DrawerActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return TabbedActivity.PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
