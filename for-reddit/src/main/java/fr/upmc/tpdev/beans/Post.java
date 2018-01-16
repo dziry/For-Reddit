@@ -1,5 +1,15 @@
 package fr.upmc.tpdev.beans;
 
+import android.support.annotation.NonNull;
+
+import net.dean.jraw.models.VoteDirection;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * TODO
  * Created by Adel on 11/01/18.
@@ -7,29 +17,40 @@ package fr.upmc.tpdev.beans;
 
 public class Post {
 
+    private String id;
+    private long currentTime;
+    private String url;
     // Header
     private String subReddit;
-    private String op;
+    private String author;
     private String time;
-    private String headerThumbnail;
     // Content
     private String title;
     private String contentThumbnail;
     // Footer
-    private String upvotesCount;
-    private String commentsCount;
+    private String scoreCount;
+    private int voteDirection;
+    private String commentCount;
 
-    public Post(String subReddit, String op, String time, String headerThumbnail, String title,
-                String contentThumbnail, String upvotesCount, String commentsCount) {
+    public Post() {
+        Calendar c = Calendar.getInstance();
+        currentTime = c.getTime().getTime();
+    }
 
-        this.subReddit = subReddit;
-        this.op = op;
-        this.time = time;
-        this.headerThumbnail = headerThumbnail;
-        this.title = title;
-        this.contentThumbnail = contentThumbnail;
-        this.upvotesCount = upvotesCount;
-        this.commentsCount = commentsCount;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getSubReddit() {
@@ -40,28 +61,22 @@ public class Post {
         this.subReddit = subReddit;
     }
 
-    public String getOp() {
-        return op;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setOp(String op) {
-        this.op = op;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getHeaderThumbnail() {
-        return headerThumbnail;
-    }
-
-    public void setHeaderThumbnail(String headerThumbnail) {
-        this.headerThumbnail = headerThumbnail;
+    public void setTime(@NonNull Date time) {
+        long tmpTime = currentTime - time.getTime();
+        DateFormat formatter = new SimpleDateFormat("HH", Locale.FRANCE);
+        this.time = formatter.format(tmpTime);
     }
 
     public String getTitle() {
@@ -80,19 +95,27 @@ public class Post {
         this.contentThumbnail = contentThumbnail;
     }
 
-    public String getUpvotesCount() {
-        return upvotesCount;
+    public String getScoreCount() {
+        return scoreCount;
     }
 
-    public void setUpvotesCount(String upvotesCount) {
-        this.upvotesCount = upvotesCount;
+    public void setScoreCount(int scoreCount) {
+        this.scoreCount = String.valueOf(scoreCount);
     }
 
-    public String getCommentsCount() {
-        return commentsCount;
+    public int getVoteDirection() {
+        return voteDirection;
     }
 
-    public void setCommentsCount(String commentsCount) {
-        this.commentsCount = commentsCount;
+    public void setVoteDirection(VoteDirection voteDirection) {
+        this.voteDirection = voteDirection.getValue();
+    }
+
+    public String getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = String.valueOf(commentCount);
     }
 }

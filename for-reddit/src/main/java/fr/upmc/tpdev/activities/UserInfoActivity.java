@@ -13,11 +13,15 @@ import net.dean.jraw.models.Comment;
 import net.dean.jraw.models.CommentNode;
 import net.dean.jraw.models.Submission;
 import fr.upmc.tpdev.R;
+import fr.upmc.tpdev.beans.Post;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,18 +67,19 @@ public class UserInfoActivity extends AppCompatActivity {
 
             //Log.i(LOG_TAG, redditClient.me().getId());
 
-            meSubreddits(redditClient);
-            //meRandomSubmissions(redditClient);
+            //meSubreddits(redditClient);
+
+            meRandomSubmissions(redditClient);
             //submissionDetails(redditClient, "7iu53s"); // LifeProTips
             //submissionDetails(redditClient, "7irlbb"); // news
             //submissionDetails(redditClient, "7iwp77"); // gifs
             //submissionDetails(redditClient, "7iwk06"); // funny
 
-            try {
+            /*try {
                 subscribe(redditClient);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             return null;
         }
@@ -98,8 +103,9 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     /* get 10 random submissions from the user's subreddits */
-    private static void meRandomSubmissions(RedditClient redditClient) {
+    public static ArrayList<Post> meRandomSubmissions(RedditClient redditClient) {
 
+        ArrayList<Post> posts = new ArrayList<>();
         List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
         final int USER_SUBREDDITS_SIZE = userSubreddits.size();
         final int FEED_SIZE = 10;
@@ -107,18 +113,36 @@ public class UserInfoActivity extends AppCompatActivity {
         for (int i = 0; i < FEED_SIZE; i++) {
             String subredditName = userSubreddits.get(i % USER_SUBREDDITS_SIZE);
             Submission sub = redditClient.getRandomSubmission(subredditName);
+            Post post = new Post();
 
+            /*Log.i(LOG_TAG, "id        = " + sub.getId());
+            Log.i(LOG_TAG, "url       = " + sub.getUrl());
             Log.i(LOG_TAG, "subName   = " + subredditName);
-            Log.i(LOG_TAG, "id        = " + sub.getId());
+            Log.i(LOG_TAG, "author    = " + sub.getAuthor());
+            Log.i(LOG_TAG, "created   = " + sub.getCreated());
             Log.i(LOG_TAG, "title     = " + sub.getTitle());
             Log.i(LOG_TAG, "thumbnail = " + sub.getThumbnail());
             Log.i(LOG_TAG, "postHint  = " + sub.getPostHint());
-            Log.i(LOG_TAG, "url       = " + sub.getUrl());
             Log.i(LOG_TAG, "score     = " + sub.getScore());
             Log.i(LOG_TAG, "vote      = " + sub.getVote());
-            Log.i(LOG_TAG, "comments  = " + sub.getCommentCount());
+            Log.i(LOG_TAG, "comments  = " + sub.getCommentCount());*/
             Log.i(LOG_TAG, "--------------------------------------------------------------");
+
+            post.setId(sub.getId());
+            post.setUrl(sub.getUrl());
+            post.setSubReddit(subredditName);
+            post.setAuthor(sub.getAuthor());
+            post.setTime(sub.getCreated());
+            post.setTitle(sub.getTitle());
+            post.setContentThumbnail(sub.getThumbnail());
+            post.setScoreCount(sub.getScore());
+            post.setVoteDirection(sub.getVote());
+            post.setCommentCount(sub.getCommentCount());
+
+            posts.add(post);
         }
+
+        return posts;
     }
 
     /* get submission details */

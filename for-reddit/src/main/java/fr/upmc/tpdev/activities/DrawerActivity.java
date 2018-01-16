@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SubMenu;
@@ -23,8 +25,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.upmc.tpdev.R;
+import fr.upmc.tpdev.adapters.PostCardAdapter;
+import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.fragments.PlaceholderFragment;
+import fr.upmc.tpdev.fragments.PostCardFragment;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,7 +72,7 @@ public class DrawerActivity extends AppCompatActivity
         // ****** Tab layout.
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        /*mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
@@ -73,8 +81,24 @@ public class DrawerActivity extends AppCompatActivity
         TabLayout tabLayout = findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));*/
         // ****** Tab layout.
+
+        //******
+        RecyclerView recyclerView = findViewById(R.id.rv_cards_in_fragment);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        ArrayList<Post> postList = new ArrayList<>();
+        PostCardAdapter adapter = new PostCardAdapter(postList);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        //******
+
+        //****** test
+        setTitle("Hello");
+        PostCardFragment fragment = new PostCardFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();
     }
 
     @Override
@@ -142,6 +166,12 @@ public class DrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         Toast.makeText(getApplicationContext(), "id=" + SUBREDDIT_TAB[id], Toast.LENGTH_SHORT).show();
+
+        setTitle("Hello");
+        PostCardFragment fragment = new PostCardFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();
+
         /*if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -175,6 +205,7 @@ public class DrawerActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
+            Log.i("Place", "i=" + position);
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
