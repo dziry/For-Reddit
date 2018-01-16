@@ -105,6 +105,10 @@ public class UserInfoActivity extends AppCompatActivity {
     /* get 10 random submissions from the user's subreddits */
     public static ArrayList<Post> meRandomSubmissions(RedditClient redditClient) {
 
+        if (redditClient == null) {
+            return new ArrayList<>();
+        }
+
         ArrayList<Post> posts = new ArrayList<>();
         List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
         final int USER_SUBREDDITS_SIZE = userSubreddits.size();

@@ -87,10 +87,10 @@ public class DrawerActivity extends AppCompatActivity
         //******
         RecyclerView recyclerView = findViewById(R.id.rv_cards_in_fragment);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        ArrayList<Post> postList = new ArrayList<>();
-        PostCardAdapter adapter = new PostCardAdapter(postList);
-
         recyclerView.setLayoutManager(layoutManager);
+
+        ArrayList<Post> postList = new ArrayList<>();
+        PostCardAdapter adapter = new PostCardAdapter(recyclerView, postList);
         recyclerView.setAdapter(adapter);
         //******
 
