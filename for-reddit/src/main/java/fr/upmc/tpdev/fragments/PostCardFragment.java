@@ -2,6 +2,7 @@ package fr.upmc.tpdev.fragments;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,12 +36,12 @@ public class PostCardFragment extends Fragment {
     private static final int MAX_POSTS_TO_LOAD = 150;
     private static final int POSTS_TO_LOAD_EACH_TIME = 10;
 
-    private static RecyclerView recyclerView;
-    private static PostCardAdapter adapter;
+    private RecyclerView recyclerView;
+    private PostCardAdapter adapter;
     private ArrayList<Post> postList;
 
     public PostCardFragment() {
-        this.postList = new ArrayList<>();
+        postList = new ArrayList<>();
     }
 
     @Override
@@ -56,13 +57,41 @@ public class PostCardFragment extends Fragment {
         adapter = new PostCardAdapter(recyclerView, postList);
         recyclerView.setAdapter(adapter);
 
-        postList = fetchPosts(view);
+        //new FooTask(view).execute();
+        adapter.fetchPosts(view);
+
+        /*final ProgressBar mShowPosts = view.findViewById(R.id.pb_show_posts);
+        mShowPosts.setVisibility(View.VISIBLE);
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+                for (int i = 0; i < 5; i++) {
+                    Post post = new Post();
+                    post.setSubReddit("feffef");
+                    post.setAuthor("zdzdzdzd");
+                    post.setTitle("lkln");
+                    post.setScoreCount(i);
+                    post.setCommentCount(i*2);
+
+                    postList.add(post);
+                }
+
+                PostCardFragment.adapter.notifyDataSetChanged();
+                mShowPosts.setVisibility(View.GONE);
+
+            }
+        }, 5000);*/
+
+        //postList = fetchPosts(view);
         //adapter.notifyDataSetChanged();
 
         return view;
     }
 
-    private ArrayList<Post> fetchPosts(View view) {
+    /*private ArrayList<Post> fetchPosts(View view) {
 
         RedditInfoTask redditInfoTask = new RedditInfoTask(view);
         redditInfoTask.execute();
@@ -102,7 +131,7 @@ public class PostCardFragment extends Fragment {
 
             PostCardFragment.adapter = new PostCardAdapter(recyclerView, postList);
             PostCardFragment.recyclerView.setAdapter(adapter);
-            loadMorePosts();
+            //loadMorePosts();
         }
 
         //set load more listener for the RecyclerView adapter
@@ -154,4 +183,43 @@ public class PostCardFragment extends Fragment {
             return postList;
         }
     }
+
+    private class FooTask extends AsyncTask<Void, Void, Void> {
+
+        @SuppressLint("StaticFieldLeak")
+        private ProgressBar mShowPosts;
+
+        FooTask(View view) {
+            super();
+
+            this.mShowPosts = view.findViewById(R.id.pb_show_posts);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mShowPosts.setVisibility(View.VISIBLE);
+            Log.i(LOG_TAG, "size(1) : " + postList.size());
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            Log.i(LOG_TAG, "size(2) : " + postList.size());
+
+            RedditClient redditClient = AuthenticationManager.get().getRedditClient();
+            postList = UserInfoActivity.meRandomSubmissions(redditClient);
+
+            Log.i(LOG_TAG, "size(3) : " + postList.size());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+            Log.i(LOG_TAG, "size(4) : " + postList.size());
+
+            adapter.notifyDataSetChanged();
+            mShowPosts.setVisibility(View.GONE);
+        }
+    }*/
 }

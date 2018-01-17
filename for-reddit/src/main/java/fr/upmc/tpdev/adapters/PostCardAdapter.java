@@ -1,5 +1,7 @@
 package fr.upmc.tpdev.adapters;
 
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -11,18 +13,20 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.dean.jraw.RedditClient;
+import net.dean.jraw.auth.AuthenticationManager;
+
 import java.util.ArrayList;
 
 import fr.upmc.tpdev.R;
+import fr.upmc.tpdev.activities.UserInfoActivity;
 import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.interfaces.OnLoadMoreListener;
 
-/**
- * Created by Adel on 15/01/18.
- */
 
 public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final String LOG_TAG = "PostCardAdapter";
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     private OnLoadMoreListener onLoadMoreListener;
@@ -121,7 +125,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return postList == null ? 0 : postList.size();
     }
 
-    public void setLoaded() {
+    private void setLoaded() {
         isLoading = false;
     }
 
@@ -165,6 +169,104 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mDownvote = view.findViewById(R.id.ib_downvote);
             mComments = view.findViewById(R.id.ib_comments);
             mShare = view.findViewById(R.id.ib_share);
+        }
+    }
+
+    public void fetchPosts(View view) {
+        new PostCardAdapter.FooTask(view, false).execute();
+    }
+
+    private int hack;
+    private class FooTask extends AsyncTask<Void, Void, Void> {
+
+        private final int MAX_POSTS_TO_LOAD = 150;
+        private ProgressBar mShowPosts;
+        private View view;
+        private boolean isLoadMore;
+        private ArrayList<Post> internPostList;
+
+        FooTask(View view, boolean isLoadMore) {
+            super();
+            this.mShowPosts = view.findViewById(R.id.pb_show_posts);
+            this.view = view;
+            this.isLoadMore = isLoadMore;
+            this.internPostList = new ArrayList<>();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mShowPosts.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            RedditClient redditClient = AuthenticationManager.get().getRedditClient();
+            internPostList = UserInfoActivity.meRandomSubmissions(redditClient);
+            postList.addAll(internPostList);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+
+            Log.i(LOG_TAG, "---------------size()------------- " + postList.size());
+
+            PostCardAdapter.this.notifyDataSetChanged();
+            mShowPosts.setVisibility(View.GONE);
+            loadMorePosts(view);
+
+            if (isLoadMore) {
+                postList.remove(hack);
+                PostCardAdapter.this.notifyItemRemoved(postList.size());
+                setLoaded();
+            }
+        }
+
+        private void loadMorePosts(final View view) {
+            PostCardAdapter.this.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+                @Override
+                public void onLoadMore() {
+
+                    if (postList.size() <= MAX_POSTS_TO_LOAD) {
+                        // do this hack to show a progress bar
+                        postList.add(null);
+                        hack = postList.size() - 1;
+                        PostCardAdapter.this.notifyItemInserted(hack);
+
+                        new PostCardAdapter.FooTask(view, true).execute();
+
+                        /*new Handler().postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                postList.remove(hack);
+                                PostCardAdapter.this.notifyItemRemoved(postList.size());
+
+                                //Generating more data
+                                int index = postList.size();
+                                int end = index + POSTS_TO_LOAD_EACH_TIME;
+
+                                for (int i = index; i < end; i++) {
+                                    Post post = new Post();
+                                    post.setSubReddit("feffef");
+                                    post.setAuthor("zdzdzdzd");
+                                    post.setTitle("lkln");
+                                    post.setScoreCount(5);
+                                    post.setCommentCount(6);
+
+                                    postList.add(post);
+                                }
+
+                                PostCardAdapter.this.notifyDataSetChanged();
+                                setLoaded();
+                            }
+                        }, 5000);*/
+                    } else {
+                        Log.i(LOG_TAG, "Loading data completed.");
+                    }
+                }
+            });
         }
     }
 }
