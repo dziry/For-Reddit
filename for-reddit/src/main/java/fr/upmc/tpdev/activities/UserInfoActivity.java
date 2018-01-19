@@ -25,6 +25,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static net.dean.jraw.util.JrawUtils.mapOf;
 
@@ -111,14 +113,15 @@ public class UserInfoActivity extends AppCompatActivity {
 
         ArrayList<Post> posts = new ArrayList<>();
         List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
+        //List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
         final int USER_SUBREDDITS_SIZE = userSubreddits.size();
-        final int FEED_SIZE = 10;
+        final int FEED_SIZE = 5;
 
         for (int i = 0; i < FEED_SIZE; i++) {
-            String subredditName = userSubreddits.get(i % USER_SUBREDDITS_SIZE);
+            int randomIndex = (int)(Math.random() * USER_SUBREDDITS_SIZE);
+            String subredditName = userSubreddits.get(randomIndex);
             // API bug : this may throws a null exception
             Submission sub = redditClient.getRandomSubmission(subredditName);
-
             Post post = new Post();
 
             post.setId(sub.getId());
@@ -127,6 +130,7 @@ public class UserInfoActivity extends AppCompatActivity {
             post.setAuthor(sub.getAuthor());
             post.setTime(sub.getCreated());
             post.setTitle(sub.getTitle());
+            post.setContentText(sub.getSelftext());
             post.setContentThumbnail(sub.getThumbnail());
             post.setScoreCount(sub.getScore());
             post.setVoteDirection(sub.getVote());
@@ -137,6 +141,44 @@ public class UserInfoActivity extends AppCompatActivity {
 
         return posts;
     }
+
+    /*static int index = 0;
+    public static ArrayList<Post> meRandomSubmissions(RedditClient redditClient) {
+
+        if (redditClient == null) {
+            return new ArrayList<>();
+        }
+
+        ArrayList<Post> posts = new ArrayList<>();
+        List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
+        final int USER_SUBREDDITS_SIZE = userSubreddits.size();
+        final int FEED_SIZE = 10;
+
+        for (int i = index; i < FEED_SIZE + index; i++) {
+            String subredditName = userSubreddits.get(i % USER_SUBREDDITS_SIZE);
+            // API bug : this may throws a null exception
+            Submission sub = redditClient.getRandomSubmission(subredditName);
+
+            Post post = new Post();
+
+            post.setId("" + i);
+            post.setUrl("" + i);
+            post.setSubReddit("" + i);
+            post.setAuthor("" + i);
+            post.setTime(sub.getCreated());
+            post.setTitle("" + i);
+            post.setContentThumbnail(sub.getThumbnail());
+            post.setScoreCount(i);
+            post.setVoteDirection(sub.getVote());
+            post.setCommentCount(i);
+
+            posts.add(post);
+        }
+
+        index += 10;
+
+        return posts;
+    }*/
 
     /* get submission details */
     private static void submissionDetails(RedditClient redditClient, String id) {

@@ -26,6 +26,7 @@ public class Post {
     private String time;
     // Content
     private String title;
+    private String contentText;
     private String contentThumbnail;
     // Footer
     private String scoreCount;
@@ -85,6 +86,14 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContentText() {
+        return contentText;
+    }
+
+    public void setContentText(String contentText) {
+        this.contentText = contentText;
     }
 
     public String getContentThumbnail() {

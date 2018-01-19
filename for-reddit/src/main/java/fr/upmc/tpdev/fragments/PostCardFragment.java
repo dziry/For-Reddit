@@ -1,9 +1,6 @@
 package fr.upmc.tpdev.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+
+import net.dean.jraw.RedditClient;
+import net.dean.jraw.auth.AuthenticationManager;
 
 import java.util.ArrayList;
 
 import fr.upmc.tpdev.R;
+import fr.upmc.tpdev.activities.UserInfoActivity;
 import fr.upmc.tpdev.adapters.PostCardAdapter;
 import fr.upmc.tpdev.beans.Post;
+import fr.upmc.tpdev.interfaces.OnLoadMoreListener;
 
 
 /**
@@ -30,6 +33,9 @@ public class PostCardFragment extends Fragment {
     // The fragment argument representing the section number for this fragment.
     private static final String ARG_SECTION_NUMBER = "section_number";
 
+    private final int MAX_POSTS_TO_LOAD = 150;
+
+    private PostCardAdapter adapter;
     private ArrayList<Post> postList;
 
     public PostCardFragment() {
@@ -57,40 +63,99 @@ public class PostCardFragment extends Fragment {
         LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        PostCardAdapter adapter = new PostCardAdapter(recyclerView, postList);
+        adapter = new PostCardAdapter(recyclerView, postList);
         recyclerView.setAdapter(adapter);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-        adapter.fetchPosts(getActivity(), view, sectionNumber);
+        fetchPosts(view, sectionNumber);
 
         return view;
     }
 
-    // Our Broadcast Receiver. We get notified that the data is ready this way.
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    public void fetchPosts(View view, int sectionNumber) {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
+        switch (sectionNumber) {
+            case 1:
+                new FooTask(view, false).execute();
+                break;
 
-            boolean isLoaded = intent.getBooleanExtra("isLoaded", false);
+            case 2:
+                //todo
+                break;
 
-            Log.i(LOG_TAG, "************* isLoaded : " + isLoaded);
+            case 3:
+                //todo
+                break;
 
-            if (isLoaded) {
-                Log.i(LOG_TAG, "************* YES.");
-            }
+            default:
+                break;
         }
-    };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().registerReceiver(receiver, new IntentFilter("loadPosts"));
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(receiver);
+    private int hack;
+    private class FooTask extends AsyncTask<Void, Void, Void> {
+
+        private ProgressBar mShowPosts;
+        private View mView;
+        private boolean isLoadMore;
+        private ArrayList<Post> internPostList;
+
+        FooTask(View view, boolean isLoadMore) {
+            super();
+            this.mShowPosts = view.findViewById(R.id.pb_show_posts);
+            this.mView = view;
+            this.isLoadMore = isLoadMore;
+            this.internPostList = new ArrayList<>();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mShowPosts.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            RedditClient redditClient = AuthenticationManager.get().getRedditClient();
+            internPostList = UserInfoActivity.meRandomSubmissions(redditClient);
+            postList.addAll(internPostList);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+            adapter.notifyDataSetChanged();
+            mShowPosts.setVisibility(View.GONE);
+            loadMorePosts(mView);
+
+            Log.i(LOG_TAG, "---------------onPostExecute " + isLoadMore);
+
+            if (isLoadMore) {
+                Log.i(LOG_TAG, "---------------isLoadMore " + isLoadMore);
+                postList.remove(hack);
+                adapter.notifyItemRemoved(postList.size());
+                adapter.setLoaded();
+            }
+        }
+    }
+
+    private void loadMorePosts(final View view) {
+        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+            @Override
+            public void onLoadMore() {
+
+                if (postList.size() <= MAX_POSTS_TO_LOAD) {
+                    // do this hack to show a progress bar
+                    postList.add(null);
+                    hack = postList.size() - 1;
+                    adapter.notifyItemInserted(hack);
+
+                    new FooTask(view, true).execute();
+
+                } else {
+                    Log.i(LOG_TAG, "Loading data completed.");
+                }
+            }
+        });
     }
 }

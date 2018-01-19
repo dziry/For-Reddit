@@ -16,6 +16,7 @@
         android:layout_margin="8dp"
         android:layout_alignParentTop="true">
 
+        <!-- Header -->
         <RelativeLayout
             android:id="@+id/rl_header"
             android:layout_width="match_parent"
@@ -49,6 +50,7 @@
             android:layout_below="@id/rl_header"
             android:background="@color/colorAccent"/>-->
 
+        <!-- Content -->
         <RelativeLayout
             android:id="@+id/rl_content"
             android:layout_width="match_parent"
@@ -58,6 +60,22 @@
             android:background="@android:color/holo_blue_dark">
 
             <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="88dp"
+                android:minHeight="80dp"/>
+
+            <ImageView
+                android:id="@+id/ib_thumbnail"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignRight="@id/tv_content"
+                android:layout_alignEnd="@id/tv_content"
+                android:scaleType="fitXY"
+                android:contentDescription="TODO"/>
+
+            <!--<TextView
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,9 +92,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:scaleType="fitXY"
-                android:contentDescription="TODO"/>
+                android:contentDescription="TODO"/>-->
         </RelativeLayout>
 
+        <!-- Footer -->
         <LinearLayout
             android:id="@+id/ll_footer"
             android:layout_width="match_parent"
