@@ -1,5 +1,7 @@
 package fr.upmc.tpdev.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -153,6 +157,11 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private class PostViewHolder extends RecyclerView.ViewHolder {
 
+        private RelativeLayout mLayoutHeader;
+        private RelativeLayout mLayoutContent;
+        private RelativeLayout mLayoutShare;
+        private RelativeLayout mLayoutMessages;
+
         private TextView mSubreddit;
         private TextView mOp;
         private TextView mContent;
@@ -169,6 +178,11 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         PostViewHolder(View view) {
             super(view);
 
+            mLayoutHeader = view.findViewById(R.id.rl_header);
+            mLayoutContent = view.findViewById(R.id.rl_content);
+            mLayoutShare = view.findViewById(R.id.rl_share);
+            mLayoutMessages = view.findViewById(R.id.rl_messages);
+
             mSubreddit = view.findViewById(R.id.tv_subreddit);
             mOp = view.findViewById(R.id.tv_op);
             mContent = view.findViewById(R.id.tv_content);
@@ -181,11 +195,66 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mDownvote = view.findViewById(R.id.ib_downvote);
             mComments = view.findViewById(R.id.ib_comments);
             mShare = view.findViewById(R.id.ib_share);
+
+            mLayoutHeader.setOnClickListener(showDetails);
+            mLayoutContent.setOnClickListener(showDetails);
+            mLayoutMessages.setOnClickListener(showDetails);
+            mLayoutShare.setOnClickListener(share);
+            mUpvote.setOnClickListener(upvote);
+            mDownvote.setOnClickListener(downvote);
         }
+
+        private View.OnClickListener showDetails = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Details !", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        private View.OnClickListener upvote = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Upvote !", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        private View.OnClickListener downvote = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Downvote !", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        private View.OnClickListener share = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Share !", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
-    public void fetchPosts(View view) {
-        new PostCardAdapter.FooTask(view, false).execute();
+    public void fetchPosts(Context context, View view, int sectionNumber) {
+
+        switch (sectionNumber) {
+            case 1:
+                new PostCardAdapter.FooTask(context, view, false).execute();
+                break;
+
+            case 2:
+                new PostCardAdapter.FooTask(context, view, false).execute();
+                break;
+
+            case 3:
+                //todo
+                break;
+
+            default:
+                break;
+        }
     }
 
     private int hack;
@@ -193,14 +262,16 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         private final int MAX_POSTS_TO_LOAD = 150;
         private ProgressBar mShowPosts;
-        private View view;
+        private Context mContext;
+        private View mView;
         private boolean isLoadMore;
         private ArrayList<Post> internPostList;
 
-        FooTask(View view, boolean isLoadMore) {
+        FooTask(Context context, View view, boolean isLoadMore) {
             super();
             this.mShowPosts = view.findViewById(R.id.pb_show_posts);
-            this.view = view;
+            this.mContext = context;
+            this.mView = view;
             this.isLoadMore = isLoadMore;
             this.internPostList = new ArrayList<>();
         }
@@ -222,12 +293,19 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         protected void onPostExecute(Void param) {
             PostCardAdapter.this.notifyDataSetChanged();
             mShowPosts.setVisibility(View.GONE);
-            loadMorePosts(view);
+            loadMorePosts(mView);
 
             if (isLoadMore) {
                 postList.remove(hack);
                 PostCardAdapter.this.notifyItemRemoved(postList.size());
                 setLoaded();
+
+            } else {
+                Intent intent = new Intent("loadPosts");
+                intent.putExtra("isLoaded", true);
+
+                // broadcast the completion
+                mContext.sendBroadcast(intent);
             }
         }
 
@@ -243,7 +321,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         hack = postList.size() - 1;
                         PostCardAdapter.this.notifyItemInserted(hack);
 
-                        new PostCardAdapter.FooTask(view, true).execute();
+                        new PostCardAdapter.FooTask(null, view, true).execute();
 
                     } else {
                         Log.i(LOG_TAG, "Loading data completed.");

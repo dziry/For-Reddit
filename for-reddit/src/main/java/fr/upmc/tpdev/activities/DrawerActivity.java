@@ -56,6 +56,7 @@ public class DrawerActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // ****** Drawer.
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,8 +69,9 @@ public class DrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        // ****** Drawer.
 
-        // ****** Tab layout.
+        // ****** Tab.
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -82,9 +84,9 @@ public class DrawerActivity extends AppCompatActivity
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        // ****** Tab layout.
+        // ****** Tab.
 
-        //******
+        // ****** Cards.
         RecyclerView recyclerView = findViewById(R.id.rv_cards_in_fragment);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -92,13 +94,7 @@ public class DrawerActivity extends AppCompatActivity
         ArrayList<Post> postList = new ArrayList<>();
         PostCardAdapter adapter = new PostCardAdapter(recyclerView, postList);
         recyclerView.setAdapter(adapter);
-        //******
-
-        //****** test
-        /*setTitle("Hello");
-        PostCardFragment fragment = new PostCardFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();*/
+        // ****** Cards.
     }
 
     @Override
@@ -193,10 +189,6 @@ public class DrawerActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -205,9 +197,8 @@ public class DrawerActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            Log.i("Place", "i=" + position);
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            // Return a PostCardFragment
             return PostCardFragment.newInstance(position + 1);
         }
 

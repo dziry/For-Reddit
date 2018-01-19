@@ -116,21 +116,10 @@ public class UserInfoActivity extends AppCompatActivity {
 
         for (int i = 0; i < FEED_SIZE; i++) {
             String subredditName = userSubreddits.get(i % USER_SUBREDDITS_SIZE);
+            // API bug : this may throws a null exception
             Submission sub = redditClient.getRandomSubmission(subredditName);
-            Post post = new Post();
 
-            /*Log.i(LOG_TAG, "id        = " + sub.getId());
-            Log.i(LOG_TAG, "url       = " + sub.getUrl());
-            Log.i(LOG_TAG, "subName   = " + subredditName);
-            Log.i(LOG_TAG, "author    = " + sub.getAuthor());
-            Log.i(LOG_TAG, "created   = " + sub.getCreated());
-            Log.i(LOG_TAG, "title     = " + sub.getTitle());
-            Log.i(LOG_TAG, "thumbnail = " + sub.getThumbnail());
-            Log.i(LOG_TAG, "postHint  = " + sub.getPostHint());
-            Log.i(LOG_TAG, "score     = " + sub.getScore());
-            Log.i(LOG_TAG, "vote      = " + sub.getVote());
-            Log.i(LOG_TAG, "comments  = " + sub.getCommentCount());*/
-            Log.i(LOG_TAG, "--------------------------------------------------------------");
+            Post post = new Post();
 
             post.setId(sub.getId());
             post.setUrl(sub.getUrl());
