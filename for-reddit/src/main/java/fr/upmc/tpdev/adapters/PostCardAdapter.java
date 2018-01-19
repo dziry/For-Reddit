@@ -9,8 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
@@ -21,6 +24,7 @@ import fr.upmc.tpdev.R;
 import fr.upmc.tpdev.activities.UserInfoActivity;
 import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.interfaces.OnLoadMoreListener;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 
 public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -108,7 +112,16 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             postViewHolder.mOp.setText(post.getAuthor());
 
             postViewHolder.mContent.setText(post.getTitle());
-            //postViewHolder.mThumbnail.setImage
+
+            if (post.getContentThumbnail() != null) {
+                Picasso.with(postViewHolder.mThumbnail.getContext())
+                        .load(post.getContentThumbnail())
+                        .transform(new RoundedCornersTransformation(10,10))
+                        .into(postViewHolder.mThumbnail);
+
+            } else {
+                postViewHolder.mThumbnail.setVisibility(View.GONE);
+            }
 
             postViewHolder.mCommentsCount.setText(post.getCommentCount());
             postViewHolder.mVotesCount.setText(post.getScoreCount());
@@ -147,7 +160,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private TextView mCommentsCount;
         private TextView mShareAction;
 
-        private ImageButton mThumbnail;
+        private ImageView mThumbnail;
         private ImageButton mUpvote;
         private ImageButton mDownvote;
         private ImageButton mComments;
@@ -207,9 +220,6 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         protected void onPostExecute(Void param) {
-
-            Log.i(LOG_TAG, "---------------size()------------- " + postList.size());
-
             PostCardAdapter.this.notifyDataSetChanged();
             mShowPosts.setVisibility(View.GONE);
             loadMorePosts(view);

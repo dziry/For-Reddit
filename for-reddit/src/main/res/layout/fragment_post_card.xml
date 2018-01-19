@@ -59,19 +59,21 @@
 
             <TextView
                 android:id="@+id/tv_content"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="88dp"
-                android:minHeight="80dp"
-                android:text="Content Content Content Content Content Content Content Content Content"/>
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/ib_thumbnail"
+                android:layout_toStartOf="@+id/ib_thumbnail"
+                android:minHeight="80dp"/>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ib_thumbnail"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_alignRight="@id/tv_content"
-                android:layout_alignEnd="@id/tv_content"
-                android:background="@android:drawable/ic_menu_help"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:scaleType="fitXY"
                 android:contentDescription="TODO"/>
         </RelativeLayout>
 
