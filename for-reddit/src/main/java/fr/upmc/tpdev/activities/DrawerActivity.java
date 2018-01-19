@@ -72,7 +72,7 @@ public class DrawerActivity extends AppCompatActivity
         // ****** Tab layout.
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        /*mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
@@ -81,7 +81,7 @@ public class DrawerActivity extends AppCompatActivity
         TabLayout tabLayout = findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));*/
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         // ****** Tab layout.
 
         //******
@@ -95,10 +95,10 @@ public class DrawerActivity extends AppCompatActivity
         //******
 
         //****** test
-        setTitle("Hello");
+        /*setTitle("Hello");
         PostCardFragment fragment = new PostCardFragment();
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();
+        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();*/
     }
 
     @Override
@@ -167,10 +167,10 @@ public class DrawerActivity extends AppCompatActivity
 
         Toast.makeText(getApplicationContext(), "id=" + SUBREDDIT_TAB[id], Toast.LENGTH_SHORT).show();
 
-        setTitle("Hello");
+        /*setTitle("Hello");
         PostCardFragment fragment = new PostCardFragment();
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();
+        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();*/
 
         /*if (id == R.id.nav_camera) {
             // Handle the camera action
@@ -208,7 +208,7 @@ public class DrawerActivity extends AppCompatActivity
             Log.i("Place", "i=" + position);
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PostCardFragment.newInstance(position + 1);
         }
 
         @Override

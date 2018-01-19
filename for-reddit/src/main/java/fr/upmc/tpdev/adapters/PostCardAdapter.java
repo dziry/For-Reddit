@@ -1,7 +1,6 @@
 package fr.upmc.tpdev.adapters;
 
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -69,7 +68,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+    private void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
         this.onLoadMoreListener = mOnLoadMoreListener;
     }
 
@@ -133,7 +132,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         private ProgressBar mLoadMore;
 
-        public LoadingViewHolder(View view) {
+        LoadingViewHolder(View view) {
             super(view);
             mLoadMore = view.findViewById(R.id.pb_load_more);
         }
@@ -154,7 +153,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageButton mComments;
         private ImageButton mShare;
 
-        public PostViewHolder(View view) {
+        PostViewHolder(View view) {
             super(view);
 
             mSubreddit = view.findViewById(R.id.tv_subreddit);
@@ -236,32 +235,6 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                         new PostCardAdapter.FooTask(view, true).execute();
 
-                        /*new Handler().postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                postList.remove(hack);
-                                PostCardAdapter.this.notifyItemRemoved(postList.size());
-
-                                //Generating more data
-                                int index = postList.size();
-                                int end = index + POSTS_TO_LOAD_EACH_TIME;
-
-                                for (int i = index; i < end; i++) {
-                                    Post post = new Post();
-                                    post.setSubReddit("feffef");
-                                    post.setAuthor("zdzdzdzd");
-                                    post.setTitle("lkln");
-                                    post.setScoreCount(5);
-                                    post.setCommentCount(6);
-
-                                    postList.add(post);
-                                }
-
-                                PostCardAdapter.this.notifyDataSetChanged();
-                                setLoaded();
-                            }
-                        }, 5000);*/
                     } else {
                         Log.i(LOG_TAG, "Loading data completed.");
                     }
