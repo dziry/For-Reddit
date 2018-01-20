@@ -17,38 +17,7 @@
         android:layout_alignParentTop="true">
 
         <!-- Header -->
-        <RelativeLayout
-            android:id="@+id/rl_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:paddingRight="8dp"
-            android:paddingLeft="8dp"
-            android:paddingBottom="8dp"
-            android:background="@android:color/darker_gray">
-
-            <TextView
-                android:id="@+id/tv_subreddit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:textSize="12sp"
-                android:text="r/funny"/>
-
-            <TextView
-                android:id="@+id/tv_op"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_subreddit"
-                android:textSize="12sp"
-                android:text="u/tpdev-upmc"/>
-        </RelativeLayout>
-
-        <!--<View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/rl_header"
-            android:background="@color/colorAccent"/>-->
+        <include layout="@layout/post_card_header" />
 
         <!-- Content -->
         <RelativeLayout
@@ -61,165 +30,28 @@
 
             <TextView
                 android:id="@+id/tv_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="88dp"
-                android:minHeight="80dp"/>
-
-            <ImageView
-                android:id="@+id/ib_thumbnail"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_alignRight="@id/tv_content"
-                android:layout_alignEnd="@id/tv_content"
-                android:scaleType="fitXY"
-                android:contentDescription="TODO"/>
-
-            <!--<TextView
-                android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@+id/ib_thumbnail"
-                android:layout_toStartOf="@+id/ib_thumbnail"
+                android:layout_toLeftOf="@+id/iv_thumbnail"
+                android:layout_toStartOf="@+id/iv_thumbnail"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:minHeight="80dp"/>
 
             <ImageView
-                android:id="@+id/ib_thumbnail"
+                android:id="@+id/iv_thumbnail"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:scaleType="fitXY"
-                android:contentDescription="TODO"/>-->
+                android:contentDescription="TODO"/>
         </RelativeLayout>
 
         <!-- Footer -->
-        <LinearLayout
-            android:id="@+id/ll_footer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingRight="8dp"
-            android:paddingLeft="8dp"
-            android:orientation="horizontal"
-            android:layout_below="@id/rl_content">
+        <include layout="@layout/post_card_footer" />
 
-            <RelativeLayout
-                android:id="@+id/rl_upvotes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark">
-
-                <ImageButton
-                    android:id="@+id/ib_upvote"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toLeftOf="@+id/tv_votes"
-                    android:layout_toStartOf="@+id/tv_votes"
-                    android:layout_centerVertical="true"
-                    android:background="@android:drawable/ic_menu_help"
-                    android:contentDescription="TODO"/>
-
-                <TextView
-                    android:id="@+id/tv_votes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textSize="12sp"
-                    android:text="100k"/>
-
-                <ImageButton
-                    android:id="@+id/ib_downvote"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_toRightOf="@id/tv_votes"
-                    android:layout_toEndOf="@id/tv_votes"
-                    android:layout_centerVertical="true"
-                    android:background="@android:drawable/ic_menu_help"
-                    android:contentDescription="TODO"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_messages"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorAccent">
-
-                <ImageButton
-                    android:id="@+id/ib_comments"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toLeftOf="@+id/vi_middle_footer"
-                    android:layout_toStartOf="@+id/vi_middle_footer"
-                    android:layout_centerVertical="true"
-                    android:background="@android:drawable/ic_menu_help"
-                    android:contentDescription="TODO"/>
-
-                <View
-                    android:id="@+id/vi_middle_footer"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
-                    android:id="@+id/tv_comments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/vi_middle_footer"
-                    android:layout_toEndOf="@id/vi_middle_footer"
-                    android:layout_centerVertical="true"
-                    android:layout_centerInParent="true"
-                    android:textSize="12sp"
-                    android:text="123"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_share"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary">
-
-                <ImageButton
-                    android:id="@+id/ib_share"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toLeftOf="@+id/vi_left_footer"
-                    android:layout_toStartOf="@+id/vi_left_footer"
-                    android:layout_centerVertical="true"
-                    android:background="@android:drawable/ic_menu_help"
-                    android:contentDescription="TODO"/>
-
-                <View
-                    android:id="@+id/vi_left_footer"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
-                    android:id="@+id/tv_share"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/vi_left_footer"
-                    android:layout_toEndOf="@id/vi_left_footer"
-                    android:layout_centerVertical="true"
-                    android:layout_centerInParent="true"
-                    android:textSize="12sp"
-                    android:text="Share"/>
-            </RelativeLayout>
-        </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

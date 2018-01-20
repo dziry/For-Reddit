@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.SubMenu;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,18 +19,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.upmc.tpdev.R;
 import fr.upmc.tpdev.adapters.PostCardAdapter;
 import fr.upmc.tpdev.beans.Post;
-import fr.upmc.tpdev.fragments.PlaceholderFragment;
 import fr.upmc.tpdev.fragments.PostCardFragment;
 
 public class DrawerActivity extends AppCompatActivity

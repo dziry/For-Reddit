@@ -1,5 +1,6 @@
 package fr.upmc.tpdev.fragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
@@ -18,16 +21,18 @@ import net.dean.jraw.auth.AuthenticationManager;
 import java.util.ArrayList;
 
 import fr.upmc.tpdev.R;
+import fr.upmc.tpdev.activities.PostActivity;
 import fr.upmc.tpdev.activities.UserInfoActivity;
 import fr.upmc.tpdev.adapters.PostCardAdapter;
 import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.interfaces.OnLoadMoreListener;
+import fr.upmc.tpdev.interfaces.OnPostCardClickListener;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PostCardFragment extends Fragment {
+public class PostCardFragment extends Fragment implements OnPostCardClickListener {
 
     private static final String LOG_TAG = "PostCardFragment";
     // The fragment argument representing the section number for this fragment.
@@ -65,6 +70,7 @@ public class PostCardFragment extends Fragment {
 
         adapter = new PostCardAdapter(recyclerView, postList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnPostCardClickListener(this);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         fetchPosts(view, sectionNumber);
@@ -127,10 +133,7 @@ public class PostCardFragment extends Fragment {
             mShowPosts.setVisibility(View.GONE);
             loadMorePosts(mView);
 
-            Log.i(LOG_TAG, "---------------onPostExecute " + isLoadMore);
-
             if (isLoadMore) {
-                Log.i(LOG_TAG, "---------------isLoadMore " + isLoadMore);
                 postList.remove(hack);
                 adapter.notifyItemRemoved(postList.size());
                 adapter.setLoaded();
@@ -157,5 +160,40 @@ public class PostCardFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onShowDetails(RelativeLayout view, int position) {
+        Log.i(LOG_TAG, "--------------------onShowDetails " + position);
+        final Post post = postList.get(position);
+        Intent intent = new Intent(PostCardFragment.this.getContext(), PostActivity.class);
+
+        intent.putExtra("id", post.getId());
+        intent.putExtra("subReddit", post.getSubReddit());
+        intent.putExtra("author", post.getAuthor());
+        intent.putExtra("time", post.getTime());
+        intent.putExtra("title", post.getTitle());
+        intent.putExtra("contentText", post.getContentText());
+        intent.putExtra("url", post.getUrl());
+        intent.putExtra("scoreCount", post.getScoreCount());
+        intent.putExtra("commentCount", post.getCommentCount());
+        intent.putExtra("voteDirection", post.getVoteDirection());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onUpvote(ImageView view, int position) {
+        Log.i(LOG_TAG, "--------------------onUpvote " + position);
+    }
+
+    @Override
+    public void onDownvote(ImageView view, int position) {
+        Log.i(LOG_TAG, "--------------------onDownvote " + position);
+    }
+
+    @Override
+    public void onShare(RelativeLayout view, int position) {
+        Log.i(LOG_TAG, "--------------------onShare " + position);
     }
 }

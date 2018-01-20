@@ -7,21 +7,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import fr.upmc.tpdev.R;
-
 import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.interfaces.OnLoadMoreListener;
+import fr.upmc.tpdev.interfaces.OnPostCardClickListener;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 
@@ -30,7 +28,8 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final String LOG_TAG = "PostCardAdapter";
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
-    private OnLoadMoreListener onLoadMoreListener;
+    private OnLoadMoreListener mOnLoadMoreListener;
+    private OnPostCardClickListener mOnPostCardClickListener;
     private boolean isLoading;
     private ArrayList<Post> postList;
     private int visibleThreshold = 1;
@@ -55,8 +54,8 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 if (!isLoading && totalItemCount == (lastVisibleItem + visibleThreshold)) {
 
-                    if (onLoadMoreListener != null) {
-                        onLoadMoreListener.onLoadMore();
+                    if (mOnLoadMoreListener != null) {
+                        mOnLoadMoreListener.onLoadMore();
                     }
 
                     isLoading = true;
@@ -66,8 +65,8 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
-        this.onLoadMoreListener = mOnLoadMoreListener;
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.mOnLoadMoreListener = onLoadMoreListener;
     }
 
     @Override
@@ -103,30 +102,19 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             PostViewHolder postViewHolder = (PostViewHolder) holder;
 
             postViewHolder.mSubreddit.setText(post.getSubReddit());
-            postViewHolder.mOp.setText(post.getAuthor());
+            postViewHolder.mAuthor.setText(post.getAuthor());
 
             postViewHolder.mContent.setText(post.getTitle());
 
             if (post.getContentThumbnail() != null) {
-                //postViewHolder.mThumbnail.setImageResource(R.drawable.ic_menu_camera);
-                Picasso.with(postViewHolder.mThumbnail.getContext())
-                        .load(post.getContentThumbnail())
-                        .transform(new RoundedCornersTransformation(10,0))
-                        .into(postViewHolder.mThumbnail);
-            } else {
-                postViewHolder.mThumbnail.setImageResource(R.drawable.ic_broken_image);
-            }
-            /*if (post.getContentThumbnail() != null) {
                 Picasso.with(postViewHolder.mThumbnail.getContext())
                         .load(post.getContentThumbnail())
                         .transform(new RoundedCornersTransformation(10,0))
                         .into(postViewHolder.mThumbnail);
 
             } else {
-                postViewHolder.mThumbnail.setImageResource(R.drawable.ic_menu_camera);
-                postViewHolder.mContent.setPadding(8, 8, 8, 8);
-                //postViewHolder.mThumbnail.setVisibility(View.INVISIBLE);
-            }*/
+                postViewHolder.mThumbnail.setImageResource(R.drawable.ic_broken_image);
+            }
 
             postViewHolder.mCommentsCount.setText(post.getCommentCount());
             postViewHolder.mVotesCount.setText(post.getScoreCount());
@@ -164,17 +152,14 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private RelativeLayout mLayoutMessages;
 
         private TextView mSubreddit;
-        private TextView mOp;
+        private TextView mAuthor;
         private TextView mContent;
         private TextView mVotesCount;
         private TextView mCommentsCount;
-        private TextView mShareAction;
 
         private ImageView mThumbnail;
-        private ImageButton mUpvote;
-        private ImageButton mDownvote;
-        private ImageButton mComments;
-        private ImageButton mShare;
+        private ImageView mUpvote;
+        private ImageView mDownvote;
 
         PostViewHolder(View view) {
             super(view);
@@ -185,17 +170,14 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mLayoutMessages = view.findViewById(R.id.rl_messages);
 
             mSubreddit = view.findViewById(R.id.tv_subreddit);
-            mOp = view.findViewById(R.id.tv_op);
+            mAuthor = view.findViewById(R.id.tv_op);
             mContent = view.findViewById(R.id.tv_content);
             mVotesCount = view.findViewById(R.id.tv_votes);
             mCommentsCount = view.findViewById(R.id.tv_comments);
-            mShareAction = view.findViewById(R.id.tv_share);
 
-            mThumbnail = view.findViewById(R.id.ib_thumbnail);
-            mUpvote = view.findViewById(R.id.ib_upvote);
-            mDownvote = view.findViewById(R.id.ib_downvote);
-            mComments = view.findViewById(R.id.ib_comments);
-            mShare = view.findViewById(R.id.ib_share);
+            mThumbnail = view.findViewById(R.id.iv_thumbnail);
+            mUpvote = view.findViewById(R.id.iv_upvote);
+            mDownvote = view.findViewById(R.id.iv_downvote);
 
             mLayoutHeader.setOnClickListener(showDetails);
             mLayoutContent.setOnClickListener(showDetails);
@@ -203,13 +185,19 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mLayoutShare.setOnClickListener(share);
             mUpvote.setOnClickListener(upvote);
             mDownvote.setOnClickListener(downvote);
+
+            //view.setTag(view);
+            //view.setOnClickListener(this);
         }
 
-        private View.OnClickListener showDetails = new View.OnClickListener() {
+       private View.OnClickListener showDetails = new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Details !", Toast.LENGTH_SHORT).show();
+
+                if (view instanceof RelativeLayout && mOnPostCardClickListener != null) {
+                    mOnPostCardClickListener.onShowDetails((RelativeLayout) view, getAdapterPosition());
+                }
             }
         };
 
@@ -217,7 +205,10 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Upvote !", Toast.LENGTH_SHORT).show();
+
+                if (view instanceof ImageView && mOnPostCardClickListener != null) {
+                    mOnPostCardClickListener.onUpvote((ImageView) view, getAdapterPosition());
+                }
             }
         };
 
@@ -225,7 +216,9 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Downvote !", Toast.LENGTH_SHORT).show();
+                if (view instanceof ImageView && mOnPostCardClickListener != null) {
+                    mOnPostCardClickListener.onDownvote((ImageView) view, getAdapterPosition());
+                }
             }
         };
 
@@ -233,8 +226,14 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Share !", Toast.LENGTH_SHORT).show();
+                if (view instanceof RelativeLayout && mOnPostCardClickListener != null) {
+                    mOnPostCardClickListener.onShare((RelativeLayout) view, getAdapterPosition());
+                }
             }
         };
+    }
+
+    public void setOnPostCardClickListener(OnPostCardClickListener onPostCardClickListener) {
+        this.mOnPostCardClickListener = onPostCardClickListener;
     }
 }

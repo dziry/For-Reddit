@@ -34,4 +34,10 @@
         android:layout_height="wrap_content"
         android:onClick="tab" />
 
+    <Button
+        android:text="Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="details" />
+
 </LinearLayout>

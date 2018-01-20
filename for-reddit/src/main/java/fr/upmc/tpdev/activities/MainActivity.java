@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public void userInfo(View view) { startActivity(new Intent(this, UserInfoActivity.class)); }
     public void drawer(View view) { startActivity(new Intent(this, DrawerActivity.class)); }
     public void tab(View view) { startActivity(new Intent(this, TabbedActivity.class)); }
+    public void details(View view) { startActivity(new Intent(this, PostActivity.class)); }
 
     @Override
     protected void onResume() {
