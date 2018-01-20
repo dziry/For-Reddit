@@ -46,6 +46,7 @@
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:contentDescription="TODO"/>
         </RelativeLayout>

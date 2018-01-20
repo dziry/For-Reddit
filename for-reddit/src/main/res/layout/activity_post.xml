@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_title"
                     android:layout_centerInParent="true"
-                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
                     android:visibility="gone"/>
 
                 <RelativeLayout

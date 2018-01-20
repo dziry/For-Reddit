@@ -112,9 +112,9 @@ public class UserInfoActivity extends AppCompatActivity {
         }
 
         ArrayList<Post> posts = new ArrayList<>();
-        List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
+        //List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
         //List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
-        //List<String> userSubreddits = Arrays.asList("gifs", "gifs");
+        List<String> userSubreddits = Arrays.asList("gifs", "gifs");
         final int USER_SUBREDDITS_SIZE = userSubreddits.size();
         final int FEED_SIZE = 5;
 
