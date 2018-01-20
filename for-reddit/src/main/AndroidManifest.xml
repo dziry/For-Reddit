@@ -36,7 +36,10 @@
             android:name=".activities.TabbedActivity"
             android:label="@string/title_activity_tabbed"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.PostActivity"></activity>
+        <activity android:name=".activities.PostActivity" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

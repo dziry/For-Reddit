@@ -1,6 +1,7 @@
 package fr.upmc.tpdev.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,9 @@ import net.dean.jraw.auth.AuthenticationState;
 import net.dean.jraw.auth.NoSuchTokenException;
 import net.dean.jraw.http.oauth.Credentials;
 import net.dean.jraw.http.oauth.OAuthException;
+
+import java.util.Locale;
+
 import fr.upmc.tpdev.App;
 import fr.upmc.tpdev.R;
 
@@ -23,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Force app to use eng, if not by default **
+        Configuration config = new Configuration();
+        config.locale = Locale.FRENCH;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        // language **
     }
 
     public void login(View view) { startActivity(new Intent(this, LoginActivity.class)); }

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">for-reddit</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_drawer">For Reddit</string>
+
+    <string name="navigation_drawer_open">فتح درج التنقل</string>
+    <string name="navigation_drawer_close">إغلاق درج التنقل</string>
+
+    <string name="action_settings">إعدادات</string>
+
+    <string name="item_top_communities">أعلى المجتمعات</string>
+    <string name="nav_settings">إعدادات</string>
+
+    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="tab_home">الرئيسية</string>
+    <string name="tab_global">العالمية</string>
+    <string name="tab_gallery">صالة عرض</string>
+    <string name="section_format">مرحبا من القسم : %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">مرحبا جزء فارغ</string>
+</resources>

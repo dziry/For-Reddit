@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">for-reddit</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_drawer">For Reddit</string>
+
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+
+    <string name="action_settings">Paramètres</string>
+
+    <string name="item_top_communities">TOP COMMUNAUTÉS</string>
+    <string name="nav_settings">Paramètres</string>
+
+    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="tab_home">ACCUEIL</string>
+    <string name="tab_global">GÉNÉRAL</string>
+    <string name="tab_gallery">GALERIE</string>
+    <string name="section_format">Bonjour de la section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Bonjour fragment vide</string>
+</resources>
