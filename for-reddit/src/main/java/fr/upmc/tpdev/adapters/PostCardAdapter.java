@@ -101,7 +101,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             postViewHolder.mSubreddit.setText(post.getSubReddit());
             postViewHolder.mAuthor.setText(post.getAuthor());
-
+            postViewHolder.mTime.setText(post.getTime());
             postViewHolder.mContent.setText(post.getTitle());
 
             if (post.getContentThumbnail() != null) {
@@ -151,6 +151,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         private TextView mSubreddit;
         private TextView mAuthor;
+        private TextView mTime;
         private TextView mContent;
         private TextView mVotesCount;
         private TextView mCommentsCount;
@@ -169,6 +170,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             mSubreddit = view.findViewById(R.id.tv_subreddit);
             mAuthor = view.findViewById(R.id.tv_op);
+            mTime = view.findViewById(R.id.tv_time);
             mContent = view.findViewById(R.id.tv_content);
             mVotesCount = view.findViewById(R.id.tv_votes);
             mCommentsCount = view.findViewById(R.id.tv_comments);

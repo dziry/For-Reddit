@@ -78,6 +78,15 @@ public class Post {
         long tmpTime = currentTime - time.getTime();
         DateFormat formatter = new SimpleDateFormat("HH", Locale.FRANCE);
         this.time = formatter.format(tmpTime);
+
+        if (this.time.startsWith("0")) {
+            this.time = this.time.substring(1);
+        }
+
+        this.time += "h";
+    }
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getTitle() {
@@ -112,12 +121,19 @@ public class Post {
         this.scoreCount = String.valueOf(scoreCount);
     }
 
+    public void setScoreCount(String  scoreCount) {
+        this.scoreCount = scoreCount;
+    }
+
     public int getVoteDirection() {
         return voteDirection;
     }
 
     public void setVoteDirection(VoteDirection voteDirection) {
         this.voteDirection = voteDirection.getValue();
+    }
+    public void setVoteDirection(int voteDirection) {
+        this.voteDirection = voteDirection;
     }
 
     public String getCommentCount() {
@@ -126,5 +142,9 @@ public class Post {
 
     public void setCommentCount(int commentCount) {
         this.commentCount = String.valueOf(commentCount);
+    }
+
+    public void setCommentCount(String  commentCount) {
+        this.commentCount = commentCount;
     }
 }

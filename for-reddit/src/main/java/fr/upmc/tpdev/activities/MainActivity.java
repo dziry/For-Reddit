@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Force app to use eng, if not by default **
         Configuration config = new Configuration();
-        config.locale = Locale.FRENCH;
+        config.locale = Locale.ENGLISH;
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         // language **
     }

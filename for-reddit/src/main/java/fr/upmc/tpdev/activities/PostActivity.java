@@ -40,19 +40,6 @@ public class PostActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "PostActivity";
 
-    private TextView mSubreddit;
-    private TextView mAuthor;
-    private TextView mTime;
-    private TextView mTitle;
-    private TextView mContentText;
-    private TextView mUrl;
-    private TextView mScoreCount;
-    private TextView mCommentsCount;
-
-    private ImageView mContentImage;
-
-    private RelativeLayout mLayoutLink;
-
     private PostDetailsAdapter adapter;
 
     @Override
@@ -64,12 +51,6 @@ public class PostActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        Post post = new Post();
-        post.setAuthor("aaa");
-        post.setTitle("bbb");
-        post.setScoreCount(4);
-        post.setCommentCount(9);
 
         ArrayList<Comment> comments = new ArrayList<>();
         comments.add(null);
@@ -100,6 +81,7 @@ public class PostActivity extends AppCompatActivity {
             comments.add(comment);
         }
 
+        Post post = preparePost();
         adapter = new PostDetailsAdapter(recyclerView, post, comments);
         recyclerView.setAdapter(adapter);
 
@@ -133,186 +115,52 @@ public class PostActivity extends AppCompatActivity {
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         fetchPosts(view, sectionNumber);*/
-
-        /*mSubreddit = findViewById(R.id.tv_subreddit);
-        mAuthor = findViewById(R.id.tv_op);
-        //mTime = findViewById(R.id.tv_time);
-        mTitle = findViewById(R.id.tv_title);
-        mContentText = findViewById(R.id.tv_self_text);
-        mUrl = findViewById(R.id.tv_link);
-        mScoreCount = findViewById(R.id.tv_votes);
-        mCommentsCount = findViewById(R.id.tv_comments);
-        mContentImage = findViewById(R.id.iv_content);
-        mLayoutLink = findViewById(R.id.rl_link);
-
-        preparePost();*/
     }
 
-    private void preparePost() {
+    private Post preparePost() {
         Intent intent = getIntent();
 
         String id = intent.getStringExtra("id");
+        String url = intent.getStringExtra("url");
         String subReddit = "r/" + intent.getStringExtra("subReddit");
         String author = "u/" + intent.getStringExtra("author");
         String time = intent.getStringExtra("time");
-
         String title = intent.getStringExtra("title");
-
         String scoreCount = intent.getStringExtra("scoreCount");
         String commentCount = intent.getStringExtra("commentCount");
         int voteDirection = intent.getIntExtra("voteDirection", -1);
 
-        mSubreddit.setText(subReddit);
-        mAuthor.setText(author);
-        mTitle.setText(title);
-        //mTime.setText(time);
+        Post post = new Post();
 
-        setPostContent();
+        post.setId(id);
+        post.setUrl(url);
+        post.setSubReddit(subReddit);
+        post.setAuthor(author);
+        post.setTitle(title);
+        post.setTime(time);
+        post.setContentText(getPostBody());
+        post.setScoreCount(scoreCount);
+        post.setCommentCount(commentCount);
+        post.setVoteDirection(voteDirection);
 
-        mScoreCount.setText(scoreCount);
-        mCommentsCount.setText(commentCount);
-
-        /*Log.i(LOG_TAG, "id                  = " + id);
-        Log.i(LOG_TAG, "subReddit           = " + subReddit);
-        Log.i(LOG_TAG, "author              = " + author);
-        Log.i(LOG_TAG, "time                = " + time);
-        Log.i(LOG_TAG, "title               = " + title);
-        Log.i(LOG_TAG, "contentText         = " + contentText);
-        Log.i(LOG_TAG, "url                 = " + url);
-        Log.i(LOG_TAG, "subscoreCountReddit = " + scoreCount);
-        Log.i(LOG_TAG, "commentCount        = " + commentCount);
-        Log.i(LOG_TAG, "voteDirection       = " + voteDirection);*/
+        return post;
     }
 
-    private void setPostContent() {
+    private String getPostBody() {
         Intent intent = getIntent();
 
         String url = intent.getStringExtra("url");
         String contentText = intent.getStringExtra("contentText");
 
-        if (url != null && !isSelfLink(url)) {
-            new PostContentTask(url).execute();
+        if (url != null && !isSelfLink(url) || contentText == null) {
+            return null;
+        }
 
-        } else if (contentText != null) {
-            mContentText.setText(contentText);
-            mContentText.setVisibility(View.VISIBLE);
-            //mLayoutLink.setVisibility(View.GONE);
-
-        }/* else {
-            mLayoutLink.setVisibility(View.GONE);
-        }*/
+        return contentText;
     }
 
     private boolean isSelfLink(String url) {
 
         return url.contains("www.reddit.com");
-    }
-
-    private class PostContentTask extends AsyncTask<Integer, Void, Integer> {
-
-        private ProgressBar mLoadPost;
-        private String url;
-
-        PostContentTask(String url) {
-            super();
-            this.mLoadPost = findViewById(R.id.pb_load_post);
-            this.url = url;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            this.mLoadPost.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Integer doInBackground(Integer... params) {
-            if (isGif(url)) {
-                return 1;
-
-            } else if (isImage(url)) {
-                return 2;
-            }
-
-            return 0;
-        }
-
-        @Override
-        protected void onPostExecute(Integer content) {
-
-            if (content == 1) {
-                Log.i(LOG_TAG, "--------GIF-------");
-                mContentImage.setVisibility(View.VISIBLE);
-                Glide.with(getApplicationContext())
-                        .load(url)
-                        .listener(new RequestListener<String,GlideDrawable>() {
-
-                            @Override
-                            public boolean onException(Exception e, String model,
-                                                       Target<GlideDrawable> target,
-                                                       boolean isFirstResource) {
-
-                                mLoadPost.setVisibility(View.GONE);
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, String model,
-                                                           Target<GlideDrawable> target,
-                                                           boolean isFromMemoryCache,
-                                                           boolean isFirstResource) {
-
-                                mLoadPost.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .into(mContentImage);
-
-            } else if (content == 2) {
-                Log.i(LOG_TAG, "--------IMAGE-------");
-                mContentImage.setVisibility(View.VISIBLE);
-                Picasso.with(getApplicationContext())
-                        .load(url)
-                        .transform(new RoundedCornersTransformation(10,0))
-                        .into(mContentImage);
-                this.mLoadPost.setVisibility(View.GONE);
-
-            } else {
-                mUrl.setText(url);
-                this.mLoadPost.setVisibility(View.GONE);
-                mLayoutLink.setVisibility(View.VISIBLE);
-            }
-        }
-
-        private boolean isGif(String url) {
-            try {
-                InputStream input = new URL(url).openStream();
-                byte[] bytes = IOUtils.toByteArray(input);
-
-                // All GIF files must start with a header block.
-                // The header takes up the first six bytes of the file.
-                // These bytes should all correspond to ASCII character codes.
-                // The first three bytes are called the signature.
-                // These should always be "GIF" (ie 71="G", 73="I", 70="F")
-                return bytes.length > 2 && bytes[0] == 71 && bytes[1] == 73 && bytes[2] == 70;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return false;
-        }
-
-        private boolean isImage(String url) {
-            try {
-                URLConnection connection = new URL(url).openConnection();
-                String contentType = connection.getHeaderField("Content-Type");
-                return contentType.startsWith("image/");
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return false;
-        }
     }
 }

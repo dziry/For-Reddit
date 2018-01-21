@@ -25,6 +25,32 @@
         android:textSize="12sp"
         android:text="u/tpdev-upmc"/>
 
+    <TextView
+        android:id="@+id/tv_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_subreddit"
+        android:layout_toRightOf="@id/tv_op"
+        android:layout_toEndOf="@id/tv_op"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        android:text="."/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_subreddit"
+        android:layout_toRightOf="@id/tv_dot"
+        android:layout_toEndOf="@id/tv_dot"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="12sp"
+        android:text="6h"/>
+
     <!--<View
         android:layout_width="match_parent"
         android:layout_height="1dp"

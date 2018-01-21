@@ -169,12 +169,12 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
         Intent intent = new Intent(PostCardFragment.this.getContext(), PostActivity.class);
 
         intent.putExtra("id", post.getId());
+        intent.putExtra("url", post.getUrl());
         intent.putExtra("subReddit", post.getSubReddit());
         intent.putExtra("author", post.getAuthor());
         intent.putExtra("time", post.getTime());
         intent.putExtra("title", post.getTitle());
         intent.putExtra("contentText", post.getContentText());
-        intent.putExtra("url", post.getUrl());
         intent.putExtra("scoreCount", post.getScoreCount());
         intent.putExtra("commentCount", post.getCommentCount());
         intent.putExtra("voteDirection", post.getVoteDirection());
