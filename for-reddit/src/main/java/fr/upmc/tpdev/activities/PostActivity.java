@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,8 +27,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 import fr.upmc.tpdev.R;
+import fr.upmc.tpdev.adapters.PostCardAdapter;
+import fr.upmc.tpdev.adapters.PostDetailsAdapter;
+import fr.upmc.tpdev.beans.Comment;
+import fr.upmc.tpdev.beans.Post;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class PostActivity extends AppCompatActivity {
@@ -46,12 +53,46 @@ public class PostActivity extends AppCompatActivity {
 
     private RelativeLayout mLayoutLink;
 
+    private PostDetailsAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        mSubreddit = findViewById(R.id.tv_subreddit);
+        RecyclerView recyclerView = findViewById(R.id.rv_post_and_comments);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        Post post = new Post();
+        post.setAuthor("aaa");
+        post.setTitle("bbb");
+        post.setScoreCount(4);
+        post.setCommentCount(9);
+
+        ArrayList<Comment> comments = new ArrayList<>();
+        comments.add(null);
+
+        for (int i = 0; i < 10; i++) {
+            Comment comment = new Comment();
+            comment.setAuthor("aa" + i);
+            //comment.setTime("aa" + i);
+            comment.setBody("bb" + i);
+            comment.setScore(""+ i);
+            comment.setReplies(new ArrayList<Comment>());
+
+            comments.add(comment);
+        }
+
+        adapter = new PostDetailsAdapter(recyclerView, post, comments);
+        recyclerView.setAdapter(adapter);
+        /*adapter.setOnPostCardClickListener(this);
+
+        int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+        fetchPosts(view, sectionNumber);*/
+
+        /*mSubreddit = findViewById(R.id.tv_subreddit);
         mAuthor = findViewById(R.id.tv_op);
         //mTime = findViewById(R.id.tv_time);
         mTitle = findViewById(R.id.tv_title);
@@ -62,7 +103,7 @@ public class PostActivity extends AppCompatActivity {
         mContentImage = findViewById(R.id.iv_content);
         mLayoutLink = findViewById(R.id.rl_link);
 
-        preparePost();
+        preparePost();*/
     }
 
     private void preparePost() {

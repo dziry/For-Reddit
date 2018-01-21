@@ -17,8 +17,8 @@ import java.util.Locale;
 
 public class Post {
 
-    private String id;
     private long currentTime;
+    private String id;
     private String url;
     // Header
     private String subReddit;
@@ -35,7 +35,7 @@ public class Post {
 
     public Post() {
         Calendar c = Calendar.getInstance();
-        currentTime = c.getTime().getTime();
+        this.currentTime = c.getTime().getTime();
     }
 
     public String getId() {

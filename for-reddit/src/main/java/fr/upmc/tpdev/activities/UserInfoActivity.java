@@ -71,7 +71,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
             //meSubreddits(redditClient);
 
-            meRandomSubmissions(redditClient);
+            //meRandomSubmissions(redditClient);
+            getComments(redditClient, "7qel3h"); // IAmA
             //submissionDetails(redditClient, "7iu53s"); // LifeProTips
             //submissionDetails(redditClient, "7irlbb"); // news
             //submissionDetails(redditClient, "7iwp77"); // gifs
@@ -138,6 +139,9 @@ public class UserInfoActivity extends AppCompatActivity {
             post.setCommentCount(sub.getCommentCount());
 
             posts.add(post);
+
+            Log.i(LOG_TAG, "score = " + sub.getScore());
+            Log.i(LOG_TAG, "id    = " + sub.getId());
         }
 
         return posts;
@@ -195,11 +199,14 @@ public class UserInfoActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "vote      = " + sub.getVote().getValue());
         Log.i(LOG_TAG, "commentsC  = " + sub.getCommentCount());
 
-        Log.i(LOG_TAG, "Comments :");
-        getComments(sub.getComments());
+        //Log.i(LOG_TAG, "Comments :");
+        //getComments(sub.getComments());
     }
     
-    private static void getComments(CommentNode commentNode) {
+    private static void getComments(RedditClient redditClient, String id) {
+
+        Submission sub = redditClient.getSubmission(id);
+        CommentNode commentNode = sub.getComments();
 
         for (CommentNode aCommentNode : commentNode) {
             Comment comment = aCommentNode.getComment();
@@ -212,7 +219,7 @@ public class UserInfoActivity extends AppCompatActivity {
             Log.i(LOG_TAG, aCommentNode.getChildren().size() + " replay(ies)");
             Log.i(LOG_TAG, "--------------------------------------------------------");
 
-            expandReplies(aCommentNode.getChildren());
+            //expandReplies(aCommentNode.getChildren());
         }
     }
 
