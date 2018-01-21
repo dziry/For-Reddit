@@ -1,7 +1,6 @@
 package fr.upmc.tpdev.adapters;
 
 import android.os.AsyncTask;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,9 +8,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,9 +19,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.squareup.picasso.Picasso;
 
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -32,12 +26,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import fr.upmc.tpdev.R;
-import fr.upmc.tpdev.activities.PostActivity;
 import fr.upmc.tpdev.beans.Comment;
 import fr.upmc.tpdev.beans.Post;
+import fr.upmc.tpdev.interfaces.OnCommentClickListener;
+
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -45,6 +39,8 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final String LOG_TAG = "PostDetailsAdapter";
     private final int VIEW_TYPE_POST = 0;
     private final int VIEW_TYPE_COMMENTS = 1;
+
+    private OnCommentClickListener mOnCommentClickListener;
 
     private Post post;
     private ArrayList<Comment> comments;
@@ -118,7 +114,6 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     && !(boolean)PostContentViewHolder.mContentImage.getTag(R.id.is_gif_ok)
                     && !(boolean)PostContentViewHolder.mContentImage.getTag(R.id.is_image_ok)) {
 
-                Log.i(LOG_TAG, "NNNNNNNNNNNNNNNNNNNUL : ");
                 new PostContentViewHolder.PostContentTask(post.getUrl()).execute();
 
             } else {
@@ -136,7 +131,13 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             commentsViewHolder.mTime.setText(comment.getTime());
             commentsViewHolder.mBody.setText(comment.getBody());
             commentsViewHolder.mScore.setText(comment.getScore());
-            commentsViewHolder.mRepliesCount.setText(comment.getRepliesCount());
+
+            if (comment.getRepliesCountInt() <= 0) {
+                commentsViewHolder.mlayoutReplies.setVisibility(View.GONE);
+
+            } else {
+                commentsViewHolder.mRepliesCount.setText(comment.getRepliesCount());
+            }
 
             int level = comment.getMarginLevelCoefficient();
             if (level > CommentsViewHolder.MAX_REPLIES_COUNT) {
@@ -305,6 +306,8 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private TextView mScore;
         private TextView mRepliesCount;
 
+        private RelativeLayout mlayoutReplies;
+
         private SparseArray<View> mHorizontalSeparator;
 
         CommentsViewHolder(View view) {
@@ -315,6 +318,7 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mBody = view.findViewById(R.id.tv_body);
             mScore = view.findViewById(R.id.tv_score);
             mRepliesCount = view.findViewById(R.id.tv_replies_count);
+            mlayoutReplies = view.findViewById(R.id.rl_comment_replies);
 
             mHorizontalSeparator = new SparseArray<>(MAX_REPLIES_COUNT);
 
@@ -326,6 +330,23 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mHorizontalSeparator.put(5, view.findViewById(R.id.vi_horizontal_separator6));
             mHorizontalSeparator.put(6, view.findViewById(R.id.vi_horizontal_separator7));
             mHorizontalSeparator.put(7, view.findViewById(R.id.vi_horizontal_separator8));
+
+            mlayoutReplies.setOnClickListener(showReplies);
         }
+
+        private View.OnClickListener showReplies = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (view instanceof RelativeLayout && mOnCommentClickListener != null) {
+                    mOnCommentClickListener.onShowReplies((RelativeLayout) view, getAdapterPosition());
+                }
+            }
+        };
+    }
+
+    public void setOnCommentClickListener(OnCommentClickListener onCommentClickListener) {
+        this.mOnCommentClickListener = onCommentClickListener;
     }
 }

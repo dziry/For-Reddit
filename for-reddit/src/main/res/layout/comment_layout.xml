@@ -6,8 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
+    android:layout_marginRight="1dp"
+    android:layout_marginEnd="1dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginStart="1dp"
+    android:layout_marginBottom="1dp"
     android:background="@android:color/white"
     card_view:cardCornerRadius="0dp">
+
+    <ProgressBar
+        android:id="@+id/pb_show_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -143,7 +155,7 @@
                     android:layout_toRightOf="@id/tv_time"
                     android:layout_toEndOf="@id/tv_time"
                     android:textSize="12sp"
-                    android:text="123"/>
+                    android:text="123 points"/>
             </RelativeLayout>
 
             <!-- Body -->
@@ -152,16 +164,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_header"
+                android:layout_marginBottom="8dp"
                 android:text="bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"/>
 
             <!-- Footer -->
             <RelativeLayout
+                android:id="@+id/rl_comment_replies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_body"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@android:color/darker_gray">
 
                 <TextView

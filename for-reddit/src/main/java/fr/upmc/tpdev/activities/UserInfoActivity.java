@@ -114,8 +114,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
         ArrayList<Post> posts = new ArrayList<>();
         //List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
-        //List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
-        List<String> userSubreddits = Arrays.asList("gifs", "pics");
+        List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
+        //List<String> userSubreddits = Arrays.asList("gifs", "pics");
         final int USER_SUBREDDITS_SIZE = userSubreddits.size();
         final int FEED_SIZE = 5;
 
@@ -203,30 +203,43 @@ public class UserInfoActivity extends AppCompatActivity {
         //getComments(sub.getComments());
     }
     
-    private static void getComments(RedditClient redditClient, String id) {
+    public static ArrayList<fr.upmc.tpdev.beans.Comment> getComments(RedditClient redditClient,
+                                                                     String id) {
 
         Submission sub = redditClient.getSubmission(id);
         CommentNode commentNode = sub.getComments();
+        ArrayList<fr.upmc.tpdev.beans.Comment> comments = new ArrayList<>();
 
         for (CommentNode aCommentNode : commentNode) {
-            Comment comment = aCommentNode.getComment();
-            Log.i(LOG_TAG, "body         = " + comment.getBody());
-            Log.i(LOG_TAG, "author       = " + comment.getAuthor());
-            Log.i(LOG_TAG, "created      = " + comment.getCreated());
-            Log.i(LOG_TAG, "score        = " + comment.getScore());
-            Log.i(LOG_TAG, "vote         = " + comment.getVote().getValue());
+            net.dean.jraw.models.Comment commentJraw = aCommentNode.getComment();
+            Log.i(LOG_TAG, "body         = " + commentJraw.getBody());
+            Log.i(LOG_TAG, "author       = " + commentJraw.getAuthor());
+            Log.i(LOG_TAG, "created      = " + commentJraw.getCreated());
+            Log.i(LOG_TAG, "score        = " + commentJraw.getScore());
+            Log.i(LOG_TAG, "vote         = " + commentJraw.getVote().getValue());
             Log.i(LOG_TAG, "--------------------------------------------------------");
             Log.i(LOG_TAG, aCommentNode.getChildren().size() + " replay(ies)");
             Log.i(LOG_TAG, "--------------------------------------------------------");
 
             //expandReplies(aCommentNode.getChildren());
+            fr.upmc.tpdev.beans.Comment comment = new fr.upmc.tpdev.beans.Comment(0);
+            comment.setId(commentJraw.getId());
+            comment.setAuthor(commentJraw.getAuthor());
+            comment.setTime(commentJraw.getCreated());
+            comment.setScore(commentJraw.getScore());
+            comment.setBody(commentJraw.getBody());
+            comment.setRepliesCount(aCommentNode.getChildren().size());
+
+            comments.add(comment);
         }
+
+        return comments;
     }
 
     private static void expandReplies(List<CommentNode> replies) {
         if (replies.size() > 0) {
             for (CommentNode aCommentNode : replies) {
-                Comment comment = aCommentNode.getComment();
+                net.dean.jraw.models.Comment comment = aCommentNode.getComment();
                 Log.i(LOG_TAG, "rep-body = " + comment.getBody());
                 Log.i(LOG_TAG, "*****************************************************");
                 Log.i(LOG_TAG, aCommentNode.getChildren().size() + " replay(ies)");

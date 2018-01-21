@@ -82,7 +82,7 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
 
         switch (sectionNumber) {
             case 1:
-                new FooTask(view, false).execute();
+                new MorePostsTask(view, false).execute();
                 break;
 
             case 2:
@@ -99,14 +99,14 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
     }
 
     private int hack;
-    private class FooTask extends AsyncTask<Void, Void, Void> {
+    private class MorePostsTask extends AsyncTask<Void, Void, Void> {
 
         private ProgressBar mShowPosts;
         private View mView;
         private boolean isLoadMore;
         private ArrayList<Post> internPostList;
 
-        FooTask(View view, boolean isLoadMore) {
+        MorePostsTask(View view, boolean isLoadMore) {
             super();
             this.mShowPosts = view.findViewById(R.id.pb_show_posts);
             this.mView = view;
@@ -153,7 +153,7 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
                     hack = postList.size() - 1;
                     adapter.notifyItemInserted(hack);
 
-                    new FooTask(view, true).execute();
+                    new MorePostsTask(view, true).execute();
 
                 } else {
                     Log.i(LOG_TAG, "Loading data completed.");

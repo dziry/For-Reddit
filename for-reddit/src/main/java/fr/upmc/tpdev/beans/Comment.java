@@ -19,6 +19,7 @@ public class Comment {
     private String time;
     private String body;
     private String score;
+    private String repliesCount;
     private int voteDirection;
     private ArrayList<Comment> replies;
     private int marginLevelCoefficient;
@@ -68,6 +69,10 @@ public class Comment {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = String.valueOf(score);
+    }
+
     public void setScore(String score) {
         this.score = score;
     }
@@ -85,7 +90,19 @@ public class Comment {
     }
 
     public String getRepliesCount() {
-        return String.valueOf(replies.size());
+        return repliesCount;
+    }
+
+    public int getRepliesCountInt() {
+        return (repliesCount != null)? Integer.parseInt(repliesCount) : 0;
+    }
+
+    public void setRepliesCount(int repliesCount) {
+        this.repliesCount = String.valueOf(repliesCount);
+    }
+
+    public void setRepliesCount(String repliesCount) {
+        this.repliesCount = repliesCount;
     }
 
     public void setReplies(ArrayList<Comment> replies) {
