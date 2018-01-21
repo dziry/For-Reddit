@@ -75,18 +75,60 @@ public class PostActivity extends AppCompatActivity {
         comments.add(null);
 
         for (int i = 0; i < 10; i++) {
-            Comment comment = new Comment();
+            Comment comment = new Comment(0);
             comment.setAuthor("aa" + i);
             //comment.setTime("aa" + i);
             comment.setBody("bb" + i);
             comment.setScore(""+ i);
-            comment.setReplies(new ArrayList<Comment>());
+
+            if (i != 3) {
+                comment.setReplies(new ArrayList<Comment>());
+            } else {
+                Comment c = new Comment(1);
+                c.setAuthor("RRaa" + i);
+                //c.setTime("RRaa" + i);
+                c.setBody("RRbb" + i);
+                c.setScore(""+ i);
+                c.setReplies(new ArrayList<Comment>());
+
+                ArrayList<Comment> cs = new ArrayList<>();
+                cs.add(c);
+
+                comment.setReplies(cs);
+            }
 
             comments.add(comment);
         }
 
         adapter = new PostDetailsAdapter(recyclerView, post, comments);
         recyclerView.setAdapter(adapter);
+
+        Comment comment = new Comment(1);
+        comment.setAuthor("xx");
+        //comment.setTime("xx");
+        comment.setBody("xx");
+        comment.setScore(""+ 22);
+        comment.setReplies(new ArrayList<Comment>());
+        comments.add(4, comment);
+
+        Comment comment1 = new Comment(2);
+        comment1.setAuthor("xxx");
+        //comment.setTime("xxx");
+        comment1.setBody("xxx");
+        comment1.setScore(""+ 221);
+        comment1.setReplies(new ArrayList<Comment>());
+        comments.add(5, comment1);
+
+        Comment comment2 = new Comment(1);
+        comment2.setAuthor("yy");
+        //comment2.setTime("yy");
+        comment2.setBody("yy");
+        comment2.setScore(""+ 23);
+        comment2.setReplies(new ArrayList<Comment>());
+        comments.add(6, comment2);
+
+        adapter.notifyDataSetChanged();
+
         /*adapter.setOnPostCardClickListener(this);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);

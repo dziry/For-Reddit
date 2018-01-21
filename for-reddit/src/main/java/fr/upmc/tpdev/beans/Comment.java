@@ -21,11 +21,13 @@ public class Comment {
     private String score;
     private int voteDirection;
     private ArrayList<Comment> replies;
+    private int marginLevelCoefficient;
 
-    public Comment() {
+    public Comment(int marginLevelCoefficient) {
         Calendar c = Calendar.getInstance();
         this.currentTime = c.getTime().getTime();
         this.replies = new ArrayList<>();
+        this.marginLevelCoefficient = marginLevelCoefficient;
     }
 
     public String getId() {
@@ -82,11 +84,19 @@ public class Comment {
         return replies;
     }
 
-    public int getRepliesCount() {
-        return replies.size();
+    public String getRepliesCount() {
+        return String.valueOf(replies.size());
     }
 
     public void setReplies(ArrayList<Comment> replies) {
         this.replies = replies;
+    }
+
+    public int getMarginLevelCoefficient() {
+        return marginLevelCoefficient;
+    }
+
+    public void setMarginLevelCoefficient(int marginLevelCoefficient) {
+        this.marginLevelCoefficient = marginLevelCoefficient;
     }
 }

@@ -1,19 +1,27 @@
 package fr.upmc.tpdev.adapters;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import fr.upmc.tpdev.R;
 import fr.upmc.tpdev.beans.Comment;
@@ -104,7 +112,15 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             commentsViewHolder.mTime.setText(comment.getTime());
             commentsViewHolder.mBody.setText(comment.getBody());
             commentsViewHolder.mScore.setText(comment.getScore());
-            //commentsViewHolder.mRepliesCount.setText(comment.getRepliesCount());
+            commentsViewHolder.mRepliesCount.setText(comment.getRepliesCount());
+
+            int level = comment.getMarginLevelCoefficient();
+            if (level > CommentsViewHolder.MAX_REPLIES_COUNT) {
+                level = CommentsViewHolder.MAX_REPLIES_COUNT;
+            }
+            for (int i = 0; i < level; i++) {
+                commentsViewHolder.mHorizontalSeparator.get(i).setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -147,11 +163,14 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class CommentsViewHolder extends RecyclerView.ViewHolder {
 
+        private static final int MAX_REPLIES_COUNT = 8;
         private TextView mAuthor;
         private TextView mTime;
         private TextView mBody;
         private TextView mScore;
         private TextView mRepliesCount;
+
+        private SparseArray<View> mHorizontalSeparator;
 
         CommentsViewHolder(View view) {
             super(view);
@@ -161,6 +180,17 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mBody = view.findViewById(R.id.tv_body);
             mScore = view.findViewById(R.id.tv_score);
             mRepliesCount = view.findViewById(R.id.tv_replies_count);
+
+            mHorizontalSeparator = new SparseArray<>(MAX_REPLIES_COUNT);
+
+            mHorizontalSeparator.put(0, view.findViewById(R.id.vi_horizontal_separator1));
+            mHorizontalSeparator.put(1, view.findViewById(R.id.vi_horizontal_separator2));
+            mHorizontalSeparator.put(2, view.findViewById(R.id.vi_horizontal_separator3));
+            mHorizontalSeparator.put(3, view.findViewById(R.id.vi_horizontal_separator4));
+            mHorizontalSeparator.put(4, view.findViewById(R.id.vi_horizontal_separator5));
+            mHorizontalSeparator.put(5, view.findViewById(R.id.vi_horizontal_separator6));
+            mHorizontalSeparator.put(6, view.findViewById(R.id.vi_horizontal_separator7));
+            mHorizontalSeparator.put(7, view.findViewById(R.id.vi_horizontal_separator8));
         }
     }
 }

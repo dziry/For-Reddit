@@ -1,98 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    card_view:cardCornerRadius="0dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_alignParentTop="true">
+        android:orientation="horizontal">
 
-        <!-- Header -->
-        <RelativeLayout
-            android:id="@+id/rl_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/holo_blue_dark">
-
-            <TextView
-                android:id="@+id/tv_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textSize="12sp"
-                android:text="u/tpdev-upmc" />
-
-            <TextView
-                android:id="@+id/tv_dot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_author"
-                android:layout_toEndOf="@id/tv_author"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:textSize="12sp"
-                android:text="."/>
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_dot"
-                android:layout_toEndOf="@id/tv_dot"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:textSize="12sp"
-                android:text="6h"/>
-
-            <!-- TODO Remove this and layout_toRightOf, layout_marginEnd -->
-            <TextView
-                android:id="@+id/tv_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_time"
-                android:layout_toEndOf="@id/tv_time"
-                android:textSize="12sp"
-                android:text="123"/>
-        </RelativeLayout>
-
-        <!-- Body -->
-        <TextView
-            android:id="@+id/tv_body"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rl_header"
-            android:text="bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"/>
-
-        <!-- Footer -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_body"
-            android:layout_marginTop="8dp"
+        <View
+            android:id="@+id/vi_horizontal_separator0"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:background="@android:color/darker_gray">
+            android:background="@color/colorPrimary"/>
 
+        <View
+            android:id="@+id/vi_horizontal_separator1"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/vi_horizontal_separator2"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/vi_horizontal_separator3"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/vi_horizontal_separator4"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/vi_horizontal_separator5"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/vi_horizontal_separator6"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/vi_horizontal_separator7"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/vi_horizontal_separator8"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentTop="true">
+
+            <!-- Header -->
+            <RelativeLayout
+                android:id="@+id/rl_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textSize="12sp"
+                    android:text="u/tpdev-upmc" />
+
+                <TextView
+                    android:id="@+id/tv_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_author"
+                    android:layout_toEndOf="@id/tv_author"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="12sp"
+                    android:text="."/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_dot"
+                    android:layout_toEndOf="@id/tv_dot"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="12sp"
+                    android:text="6h"/>
+
+                <!-- TODO Remove this and layout_toRightOf, layout_marginEnd -->
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_time"
+                    android:layout_toEndOf="@id/tv_time"
+                    android:textSize="12sp"
+                    android:text="123"/>
+            </RelativeLayout>
+
+            <!-- Body -->
             <TextView
-                android:id="@+id/tv_replies_count"
+                android:id="@+id/tv_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="6 more replies"/>
-        </RelativeLayout>
+                android:layout_below="@id/rl_header"
+                android:text="bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"/>
 
-        <!-- TODO -->
-    </RelativeLayout>
+            <!-- Footer -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_body"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/darker_gray">
+
+                <TextView
+                    android:id="@+id/tv_replies_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="6 more replies"/>
+            </RelativeLayout>
+
+            <!-- TODO -->
+        </RelativeLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

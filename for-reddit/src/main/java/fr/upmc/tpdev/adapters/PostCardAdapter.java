@@ -79,11 +79,13 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (viewType == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_post_card,
                     parent, false);
+
             return new PostViewHolder(view);
 
         } else if (viewType == VIEW_TYPE_LOADING) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.posts_loading,
                     parent, false);
+
             return new LoadingViewHolder(view);
         }
 
