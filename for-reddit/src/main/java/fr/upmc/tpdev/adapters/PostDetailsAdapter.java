@@ -136,14 +136,25 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 commentsViewHolder.mlayoutReplies.setVisibility(View.GONE);
 
             } else {
-                commentsViewHolder.mRepliesCount.setText(comment.getRepliesCountString());
-                commentsViewHolder.mlayoutReplies.setTag(comment.getId());
+                if (!comment.isExpanded()) {
+                    commentsViewHolder.mlayoutReplies.setVisibility(View.VISIBLE);
+                    commentsViewHolder.mlayoutReplies.setTag(comment.getId());
+                    commentsViewHolder.mRepliesCount.setText(comment.getRepliesCountString());
+
+                } else {
+                    commentsViewHolder.mlayoutReplies.setVisibility(View.GONE);
+                }
             }
 
             int level = comment.getMarginLevelCoefficient();
             if (level > CommentsViewHolder.MAX_REPLIES_COUNT) {
                 level = CommentsViewHolder.MAX_REPLIES_COUNT;
             }
+            // clean because it's a recycler view
+            for (int i = 0; i < CommentsViewHolder.MAX_REPLIES_COUNT; i++) {
+                commentsViewHolder.mHorizontalSeparator.get(i).setVisibility(View.GONE);
+            }
+            // update
             for (int i = 0; i < level; i++) {
                 commentsViewHolder.mHorizontalSeparator.get(i).setVisibility(View.VISIBLE);
             }

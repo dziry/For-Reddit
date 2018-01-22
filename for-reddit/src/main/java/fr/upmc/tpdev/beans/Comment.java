@@ -26,12 +26,14 @@ public class Comment {
     private ArrayList<Comment> replies;
     private List<CommentNode> children;
     private int marginLevelCoefficient;
+    private boolean isExpanded;
 
     public Comment(@NonNull int marginLevelCoefficient) {
         Calendar c = Calendar.getInstance();
         this.currentTime = c.getTime().getTime();
         this.replies = new ArrayList<>();
         this.marginLevelCoefficient = marginLevelCoefficient;
+        this.isExpanded = false;
     }
 
     public String getId() {
@@ -130,5 +132,13 @@ public class Comment {
 
     public void setMarginLevelCoefficient(int marginLevelCoefficient) {
         this.marginLevelCoefficient = marginLevelCoefficient;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean isExpanded) {
+        this.isExpanded = isExpanded;
     }
 }

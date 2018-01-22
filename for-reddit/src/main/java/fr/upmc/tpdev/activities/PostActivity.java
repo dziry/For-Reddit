@@ -204,6 +204,16 @@ public class PostActivity extends AppCompatActivity implements OnCommentClickLis
         Comment comment = getCommentById(commentId);
 
         if (comment != null) {
+
+            Log.i(LOG_TAG, "--------isExpanded : " + comments.get(parentPosition).isExpanded());
+
+            comment.setExpanded(true);
+            comments.set(parentPosition, comment);
+            //adapter.notifyItemChanged(parentPosition);
+            Log.i(LOG_TAG, "--------isExpanded : " + comments.get(parentPosition).isExpanded());
+
+            Log.i(LOG_TAG, "--------getAuthor : " + comment.getAuthor());
+
             if (comment.getChildren().size() > 0) {
 
                 int position = 0;
@@ -219,13 +229,14 @@ public class PostActivity extends AppCompatActivity implements OnCommentClickLis
                     reply.setRepliesCount(aCommentNode.getChildren().size());
                     reply.setChildren(aCommentNode.getChildren());
 
-                    Log.i(LOG_TAG, "--------RA : " + reply.getAuthor());
-
-                    comments.add(parentPosition + 1 + position, reply);
+                    int newPosition = parentPosition + 1 + position;
+                    comments.add(newPosition, reply);
+                    Log.i(LOG_TAG, "--------POS : " + newPosition);
+                    adapter.notifyItemInserted(newPosition);
                     position++;
                 }
 
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
             }
         }
     }
