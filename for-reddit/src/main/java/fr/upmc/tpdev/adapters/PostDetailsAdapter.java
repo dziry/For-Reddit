@@ -417,6 +417,6 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setOnPostDetailsClickListener(OnPostDetailsClickListener onPostDetailsClickListener) {
-        this.mOnPostDetailsClickListener = onPostDetailsClickListener;
+        mOnPostDetailsClickListener = onPostDetailsClickListener;
     }
 }

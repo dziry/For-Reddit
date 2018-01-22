@@ -20,9 +20,11 @@ import net.dean.jraw.models.CommentNode;
 import java.util.ArrayList;
 
 import fr.upmc.tpdev.R;
+import fr.upmc.tpdev.WebActivity;
 import fr.upmc.tpdev.adapters.PostDetailsAdapter;
 import fr.upmc.tpdev.beans.Comment;
 import fr.upmc.tpdev.beans.Post;
+import fr.upmc.tpdev.fragments.PostCardFragment;
 import fr.upmc.tpdev.interfaces.OnCommentClickListener;
 import fr.upmc.tpdev.interfaces.OnPostDetailsClickListener;
 
@@ -259,7 +261,13 @@ public class PostActivity extends AppCompatActivity implements OnCommentClickLis
 
     @Override
     public void onUrl(RelativeLayout view, int position) {
-        //TODO
+        Log.i(LOG_TAG, "--------------------onUrl " + position);
+        Intent thisIntent = getIntent();
+        String url = thisIntent.getStringExtra("url");
+
+        Intent intent = new Intent(PostActivity.this, WebActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
     }
 
     @Override
