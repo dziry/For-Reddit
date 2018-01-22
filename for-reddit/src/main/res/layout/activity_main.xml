@@ -10,6 +10,12 @@
     tools:context="fr.upmc.tpdev.activities.MainActivity"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello"/>
+
     <Button
         android:text="Login"
         android:layout_width="match_parent"
@@ -22,7 +28,7 @@
         android:layout_height="wrap_content"
         android:onClick="userInfo" />
 
-    <Button
+    <!--<Button
         android:text="Drawer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,6 +44,6 @@
         android:text="Details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="details" />
+        android:onClick="details" />-->
 
 </LinearLayout>

@@ -1,5 +1,9 @@
 package fr.upmc.tpdev.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +25,9 @@ import fr.upmc.tpdev.R;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static final String IS_LOGIN = "fr.upmc.tpdev.isLogin";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +56,15 @@ public class LoginActivity extends AppCompatActivity {
                     this.found = true;
                     new OnUserChallengeTask().execute(url);
                     finish();
+
+                    getSharedPreferences(getApplicationContext())
+                            .edit()
+                            .putBoolean(IS_LOGIN, true)
+                            .apply();
+
+                    // start new Drawer Activity
+                    startActivity(new Intent(LoginActivity.this, DrawerActivity.class));
+
                 } else if (url.contains("error=")) {
                     // Something went wrong (the user denied our app access to their account, we specified a scope that
                     // doesn't exist, etc.) See here for the full list of error reasons:
@@ -75,10 +91,16 @@ public class LoginActivity extends AppCompatActivity {
                 reddit.authenticate(data);
 
                 return reddit.getAuthenticatedUser();
+
             } catch (NetworkException | OAuthException e) {
                 Log.e(MainActivity.TAG, "Could not log in", e);
+
                 return null;
             }
         }
+    }
+
+    private SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
     }
 }

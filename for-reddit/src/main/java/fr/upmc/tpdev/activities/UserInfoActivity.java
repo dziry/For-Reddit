@@ -39,6 +39,14 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
+        /*RedditClient redditClient = AuthenticationManager.get().getRedditClient();
+        if (redditClient.me() != null) {
+            Log.i(LOG_TAG, "CONNECTED !");
+
+        } else {
+            Log.i(LOG_TAG, "oups");
+        }*/
+
         new RedditInfoTask().execute();
 
         /*new AsyncTask<Void, Void, LoggedInAccount>() {
@@ -67,12 +75,13 @@ public class UserInfoActivity extends AppCompatActivity {
 
             RedditClient redditClient = AuthenticationManager.get().getRedditClient();
 
-            //Log.i(LOG_TAG, redditClient.me().getId());
+            Log.i(LOG_TAG, "N !" + redditClient.me().getFullName());
+            Log.i(LOG_TAG, "N !" + redditClient.me().getCommentKarma());
 
             //meSubreddits(redditClient);
 
             //meRandomSubmissions(redditClient);
-            getComments(redditClient, "7qel3h"); // IAmA
+            //getComments(redditClient, "7qel3h"); // IAmA
             //submissionDetails(redditClient, "7iu53s"); // LifeProTips
             //submissionDetails(redditClient, "7irlbb"); // news
             //submissionDetails(redditClient, "7iwp77"); // gifs
@@ -332,106 +341,4 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         }
     }*/
-    
-    private static void meNotifications() {
-        //TODO
-    }
-    
-    private static void meMessages() {
-        //TODO
-    }
-    
-    private static void meModMails() {
-        //TODO
-    }
-    
-    private static void mePosts() {
-        //TODO
-    }
-    
-    private static void meComments() {
-        //TODO
-    }
-    
-    /* show data such as name, karma, reddit age */
-    private static void mePersonalData() {
-        //TODO
-    }
-    
-    private static void meHistory() {
-        //TODO
-    }
-    
-    private static void meSaved() {
-        //TODO
-    }
-    
-    private static void meUpvoted() {
-        //TODO
-    }
-    
-    private static void meHidden() {
-        //TODO
-    }
-    
-    private static void upvotePost() {
-        //TODO
-    }
-    
-    private static void downvotePost() {
-        //TODO
-    }
-    
-    private static void sharePost() {
-        //TODO
-    }    
-
-    private static void upvoteComment() {
-        //TODO
-    }
-    
-    private static void downvoteComment() {
-        //TODO
-    }
-    
-    private static void postImageVideo() {
-        //TODO
-    }
-    
-    private static void postText() {
-        //TODO
-    }
-    
-    private static void postLink() {
-        //TODO
-    }
-    
-    private static void addComment() {
-        //TODO
-    }
-    
-    private static void replayToComment() {
-        //TODO
-    }
-    
-    private static void subscribe(RedditClient redditClient) throws MalformedURLException {
-        /*String method = "POST";
-        URL url = new URL("http://www.reddit.com/api/save?id=7iu53s");
-//LPT: If your roof is the first on the block with it's snow melting, you may want to look at adding insulation to your attic. This will help all year round, not just in the winter.
-        HttpRequest req;
-        req = HttpRequest.from(method, url, "1", "2");
-
-        Map<String, String> args = new HashMap<>();
-        args.put("id", "7iu53s");
-
-        RestResponse response = redditClient.execute(request()
-                .path("/save")
-                .query(args)
-                .build());
-        Log.d(LOG_TAG, "R=" + response.getJson());*/
-    }    
-    
-    private static void unsubscribe() {
-        //TODO
-    }
 }

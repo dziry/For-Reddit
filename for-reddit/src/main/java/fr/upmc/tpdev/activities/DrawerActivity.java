@@ -1,6 +1,10 @@
 package fr.upmc.tpdev.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -21,7 +25,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import net.dean.jraw.RedditClient;
+import net.dean.jraw.auth.AuthenticationManager;
 
 import java.util.ArrayList;
 
@@ -34,20 +42,14 @@ import fr.upmc.tpdev.fragments.PostCardFragment;
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    public static final String USER = "fr.upmc.tpdev.user";
+    public static final String KARMA = "fr.upmc.tpdev.karma";
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    private TextView mUser;
+    private TextView mKarma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,21 @@ public class DrawerActivity extends AppCompatActivity
         PostCardAdapter adapter = new PostCardAdapter(recyclerView, postList, 1);
         recyclerView.setAdapter(adapter);
         // ****** Cards.
+
+        mUser = findViewById(R.id.tv_user);
+        mKarma = findViewById(R.id.tv_karma);
+
+        /*String user = getSharedPreferences(this).getString(USER, null);
+        int karma = getSharedPreferences(this).getInt(KARMA, -1);
+
+        if (user == null || karma < 0) {
+            new LoginTask().execute();
+
+        } else {
+            mUser.setText(user);
+            String karmaString = karma + " karma";
+            mKarma.setText(karmaString);
+        }*/
     }
 
     @Override
@@ -162,35 +179,18 @@ public class DrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Toast.makeText(getApplicationContext(), "id=" + SUBREDDIT_TAB[id], Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "id=" + SUBREDDIT_TAB[id], Toast.LENGTH_SHORT).show();
 
-        String subredditName = SUBREDDIT_TAB[id];
+        if (id == R.id.nav_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
 
-        Intent intent = new Intent(DrawerActivity.this, SubredditActivity.class);
-        intent.putExtra("sub", subredditName);
+        } else {
+            String subredditName = SUBREDDIT_TAB[id];
 
-        startActivity(intent);
+            Intent intent = new Intent(DrawerActivity.this, SubredditActivity.class);
+            intent.putExtra("sub", subredditName);
 
-        /*setTitle(subredditName);
-        PostCardFragment fragment = new PostCardFragment();
-
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();*/
-
-        /*if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } elseif (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        } else*/ if (id == 2) {
-            Log.i("Drawer", "2");
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -216,5 +216,41 @@ public class DrawerActivity extends AppCompatActivity
             // Show 2 total pages : Home, Global
             return 2;
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoginTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            RedditClient redditClient = AuthenticationManager.get().getRedditClient();
+
+            String fullName = redditClient.me().getFullName();
+            int karma = redditClient.me().getCommentKarma();
+
+            getSharedPreferences(getApplicationContext())
+                    .edit()
+                    .putString(USER, fullName)
+                    .putInt(KARMA, karma)
+                    .apply();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+
+            String user = getSharedPreferences(getApplicationContext()).getString(USER, null);
+            int karma = getSharedPreferences(getApplicationContext()).getInt(KARMA, -1);
+
+            mUser.setText(user);
+            String karmaString = karma + " karma";
+            mKarma.setText(karmaString);
+        }
+    }
+
+    private SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
     }
 }

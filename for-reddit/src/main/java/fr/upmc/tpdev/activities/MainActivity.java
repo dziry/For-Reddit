@@ -1,6 +1,9 @@
 package fr.upmc.tpdev.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void login(View view) { startActivity(new Intent(this, LoginActivity.class)); }
     public void userInfo(View view) { startActivity(new Intent(this, UserInfoActivity.class)); }
-    public void drawer(View view) { startActivity(new Intent(this, DrawerActivity.class)); }
+    /*public void drawer(View view) { startActivity(new Intent(this, DrawerActivity.class)); }
     public void tab(View view) { startActivity(new Intent(this, TabbedActivity.class)); }
-    public void details(View view) { startActivity(new Intent(this, PostActivity.class)); }
+    public void details(View view) { startActivity(new Intent(this, PostActivity.class)); }*/
 
     @Override
     protected void onResume() {
@@ -49,16 +52,28 @@ public class MainActivity extends AppCompatActivity {
 
         switch (state) {
             case READY:
+                //Toast.makeText(MainActivity.this, "READY", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "READY");
                 break;
             case NONE:
-                Toast.makeText(MainActivity.this, "Log in first", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Log in first", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Log in first");
                 break;
             case NEED_REFRESH:
+                //Toast.makeText(MainActivity.this, "REF", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "REF ");
                 refreshAccessTokenAsync();
                 break;
         }
+
+        boolean isConnected = getSharedPreferences(this).getBoolean(LoginActivity.IS_LOGIN, false);
+
+        if (isConnected) {
+            startActivity(new Intent(this, DrawerActivity.class));
+        }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void refreshAccessTokenAsync() {
         new AsyncTask<Credentials, Void, Void>() {
             @Override
@@ -76,5 +91,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Reauthenticated");
             }
         }.execute();
+    }
+
+    private SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
     }
 }
