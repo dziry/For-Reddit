@@ -168,9 +168,20 @@ public class SubredditActivity extends AppCompatActivity implements OnPostCardCl
     }
 
     @Override
-    public void onShare(RelativeLayout view, int position) {
+    public void onShare(RelativeLayout view, int position, int tab) {
         Log.i(LOG_TAG, "--------------------onShare " + position);
-        Toast.makeText(getApplicationContext(), "Share action !",
-                Toast.LENGTH_SHORT).show();
+        /*Toast.makeText(getApplicationContext(), "Share action !",
+                Toast.LENGTH_SHORT).show();*/
+
+        shareText(postList.get(tab).get(position).getTitle()
+                + postList.get(tab).get(position).getUrl());
+    }
+
+    public void shareText(String bodyText) {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject/Title");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, bodyText);
+        startActivity(Intent.createChooser(intent, "Choose sharing method"));
     }
 }

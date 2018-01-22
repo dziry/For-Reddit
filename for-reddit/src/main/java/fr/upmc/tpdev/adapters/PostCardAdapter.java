@@ -232,7 +232,8 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View view) {
                 if (view instanceof RelativeLayout && mOnPostCardClickListener != null) {
-                    mOnPostCardClickListener.onShare((RelativeLayout) view, getAdapterPosition());
+                    mOnPostCardClickListener.onShare((RelativeLayout) view, getAdapterPosition(),
+                            sectionNumber);
                 }
             }
         };

@@ -8,5 +8,5 @@ public interface OnPostCardClickListener {
     void onShowDetails(RelativeLayout view, int position, int tab);
     void onUpvote(ImageView view, int position);
     void onDownvote(ImageView view, int position);
-    void onShare(RelativeLayout view, int position);
+    void onShare(RelativeLayout view, int position, int tab);
 }
