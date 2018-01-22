@@ -32,6 +32,7 @@ import fr.upmc.tpdev.beans.Comment;
 import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.interfaces.OnCommentClickListener;
 
+import fr.upmc.tpdev.interfaces.OnPostDetailsClickListener;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -41,6 +42,7 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int VIEW_TYPE_COMMENTS = 1;
 
     private OnCommentClickListener mOnCommentClickListener;
+    private static OnPostDetailsClickListener mOnPostDetailsClickListener;
 
     private Post post;
     private ArrayList<Comment> comments;
@@ -180,6 +182,10 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private static ProgressBar mLoadPost;
         private static ImageView mContentImage;
         private static RelativeLayout mLayoutLink;
+        private RelativeLayout mLayoutShare;
+
+        private ImageView mUpvote;
+        private ImageView mDownvote;
 
         PostContentViewHolder(View view) {
             super(view);
@@ -195,12 +201,60 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mLoadPost = view.findViewById(R.id.pb_load_post);
             mContentImage = view.findViewById(R.id.iv_content);
             mLayoutLink = view.findViewById(R.id.rl_link);
+            mLayoutShare = view.findViewById(R.id.rl_share);
+            mUpvote = view.findViewById(R.id.iv_upvote);
+            mDownvote = view.findViewById(R.id.iv_downvote);
 
             // to check if resources are ready or not
             mContentImage.setTag(R.id.is_gif_ok, false);
             mContentImage.setTag(R.id.is_image_ok, false);
+
+            mLayoutLink.setOnClickListener(onUrl);
+            mUpvote.setOnClickListener(upvote);
+            mDownvote.setOnClickListener(downvote);
+            mLayoutShare.setOnClickListener(share);
         }
 
+        private View.OnClickListener onUrl = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (view instanceof RelativeLayout && mOnPostDetailsClickListener != null) {
+                    mOnPostDetailsClickListener.onUrl((RelativeLayout) view, getAdapterPosition());
+                }
+            }
+        };
+        private View.OnClickListener upvote = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (view instanceof ImageView && mOnPostDetailsClickListener != null) {
+                    mOnPostDetailsClickListener.onUpvote((ImageView) view, getAdapterPosition());
+                }
+            }
+        };
+        private View.OnClickListener downvote = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (view instanceof ImageView && mOnPostDetailsClickListener != null) {
+                    mOnPostDetailsClickListener.onDownvote((ImageView) view, getAdapterPosition());
+                }
+            }
+        };
+        private View.OnClickListener share = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (view instanceof RelativeLayout && mOnPostDetailsClickListener != null) {
+                    mOnPostDetailsClickListener.onShare((RelativeLayout) view, getAdapterPosition());
+                }
+            }
+        };
         public static class PostContentTask extends AsyncTask<Integer, Void, Integer> {
             private String url;
 
@@ -360,5 +414,9 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void setOnCommentClickListener(OnCommentClickListener onCommentClickListener) {
         this.mOnCommentClickListener = onCommentClickListener;
+    }
+
+    public void setOnPostDetailsClickListener(OnPostDetailsClickListener onPostDetailsClickListener) {
+        this.mOnPostDetailsClickListener = onPostDetailsClickListener;
     }
 }

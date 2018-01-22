@@ -8,8 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
@@ -22,8 +24,10 @@ import fr.upmc.tpdev.adapters.PostDetailsAdapter;
 import fr.upmc.tpdev.beans.Comment;
 import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.interfaces.OnCommentClickListener;
+import fr.upmc.tpdev.interfaces.OnPostDetailsClickListener;
 
-public class PostActivity extends AppCompatActivity implements OnCommentClickListener {
+public class PostActivity extends AppCompatActivity implements OnCommentClickListener,
+        OnPostDetailsClickListener{
 
     private final String LOG_TAG = "PostActivity";
 
@@ -73,6 +77,7 @@ public class PostActivity extends AppCompatActivity implements OnCommentClickLis
         adapter = new PostDetailsAdapter(recyclerView, post, comments);
         recyclerView.setAdapter(adapter);
         adapter.setOnCommentClickListener(this);
+        adapter.setOnPostDetailsClickListener(this);
 
         loadComments();
     }
@@ -250,5 +255,44 @@ public class PostActivity extends AppCompatActivity implements OnCommentClickLis
         }
 
         return null;
+    }
+
+    @Override
+    public void onUrl(RelativeLayout view, int position) {
+        //TODO
+    }
+
+    @Override
+    public void onUpvote(ImageView view, int position) {
+        Log.i(LOG_TAG, "--------------------onUpvote " + position);
+        Toast.makeText(getApplicationContext(), "The wrapper can't handle upVote action yet",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDownvote(ImageView view, int position) {
+        Log.i(LOG_TAG, "--------------------onDownvote " + position);
+        Toast.makeText(getApplicationContext(), "The wrapper can't handle downVote action yet",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onShare(RelativeLayout view, int position) {
+        Log.i(LOG_TAG, "--------------------onShare " + position);
+
+        Intent intent = getIntent();
+
+        String url = intent.getStringExtra("url");
+        String title = intent.getStringExtra("title");
+
+        shareText(title + url);
+    }
+
+    public void shareText(String bodyText) {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject/Title");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, bodyText);
+        startActivity(Intent.createChooser(intent, "Choose sharing method"));
     }
 }
