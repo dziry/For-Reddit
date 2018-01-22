@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.SubMenu;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -86,8 +87,12 @@ public class DrawerActivity extends AppCompatActivity
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        ArrayList<Post> postList = new ArrayList<>();
-        PostCardAdapter adapter = new PostCardAdapter(recyclerView, postList);
+        SparseArray<ArrayList<Post>> postList = new SparseArray<>();
+        postList.put(1, new ArrayList<Post>());
+        postList.put(2, new ArrayList<Post>());
+        postList.put(3, new ArrayList<Post>());
+
+        PostCardAdapter adapter = new PostCardAdapter(recyclerView, postList, 1);
         recyclerView.setAdapter(adapter);
         // ****** Cards.
     }

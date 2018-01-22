@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +32,16 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private OnLoadMoreListener mOnLoadMoreListener;
     private OnPostCardClickListener mOnPostCardClickListener;
     private boolean isLoading;
-    private ArrayList<Post> postList;
+    private SparseArray<ArrayList<Post>> postList;
     private int visibleThreshold = 1;
     private int lastVisibleItem;
     private int totalItemCount;
+    private int sectionNumber;
 
-    public PostCardAdapter(RecyclerView recyclerView, ArrayList<Post> postList) {
+    public PostCardAdapter(RecyclerView recyclerView, SparseArray<ArrayList<Post>> postList,
+                           int sectionNumber) {
         this.postList = postList;
+        this.sectionNumber = sectionNumber;
 
         final LinearLayoutManager linearLayoutManager =
                 (LinearLayoutManager) recyclerView.getLayoutManager();
@@ -70,7 +74,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        return postList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        return postList.get(sectionNumber).get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
     @Override
@@ -96,7 +100,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof PostViewHolder) {
-            Post post = postList.get(position);
+            Post post = postList.get(sectionNumber).get(position);
             PostViewHolder postViewHolder = (PostViewHolder) holder;
 
             postViewHolder.mSubreddit.setText(post.getSubReddit());
@@ -125,7 +129,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return postList == null ? 0 : postList.size();
+        return postList.get(sectionNumber) == null ? 0 : postList.get(sectionNumber).size();
     }
 
     public void setLoaded() {
@@ -196,7 +200,8 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             public void onClick(View view) {
 
                 if (view instanceof RelativeLayout && mOnPostCardClickListener != null) {
-                    mOnPostCardClickListener.onShowDetails((RelativeLayout) view, getAdapterPosition());
+                    mOnPostCardClickListener.onShowDetails((RelativeLayout) view,
+                            getAdapterPosition(), sectionNumber);
                 }
             }
         };

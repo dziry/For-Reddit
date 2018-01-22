@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import fr.upmc.tpdev.R;
 import fr.upmc.tpdev.activities.PostActivity;
@@ -41,10 +43,13 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
     private final int MAX_POSTS_TO_LOAD = 150;
 
     private PostCardAdapter adapter;
-    private ArrayList<Post> postList;
+    private SparseArray<ArrayList<Post>> postList;
 
     public PostCardFragment() {
-        postList = new ArrayList<>();
+        postList = new SparseArray<>();
+        postList.put(1, new ArrayList<Post>());
+        postList.put(2, new ArrayList<Post>());
+        postList.put(3, new ArrayList<Post>());
     }
 
     // Returns a new instance of this fragment for the given section number.
@@ -68,11 +73,12 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
         LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new PostCardAdapter(recyclerView, postList);
+        int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+
+        adapter = new PostCardAdapter(recyclerView, postList, sectionNumber);
         recyclerView.setAdapter(adapter);
         adapter.setOnPostCardClickListener(this);
 
-        int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         fetchPosts(view, sectionNumber);
 
         return view;
@@ -81,15 +87,15 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
     public void fetchPosts(View view, int sectionNumber) {
 
         switch (sectionNumber) {
-            case 1:
-                new MorePostsTask(view, false).execute();
+            case 1: // HOME
+                new MorePostsTask(view, false, 1).execute();
                 break;
 
-            case 2:
-                //todo
+            case 2: // GLOBAL
+                //new MorePostsTask(view, false, 2).execute();
                 break;
 
-            case 3:
+            case 3: // COMMUNITY
                 //todo
                 break;
 
@@ -104,14 +110,14 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
         private ProgressBar mShowPosts;
         private View mView;
         private boolean isLoadMore;
-        private ArrayList<Post> internPostList;
+        private int sectionNumber;
 
-        MorePostsTask(View view, boolean isLoadMore) {
+        MorePostsTask(View view, boolean isLoadMore, int sectionNumber) {
             super();
             this.mShowPosts = view.findViewById(R.id.pb_show_posts);
             this.mView = view;
             this.isLoadMore = isLoadMore;
-            this.internPostList = new ArrayList<>();
+            this.sectionNumber = sectionNumber;
         }
 
         @Override
@@ -121,9 +127,20 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
 
         @Override
         protected Void doInBackground(Void... params) {
+
             RedditClient redditClient = AuthenticationManager.get().getRedditClient();
-            internPostList = UserInfoActivity.meRandomSubmissions(redditClient);
-            postList.addAll(internPostList);
+
+            if (sectionNumber == 1) { // HOME
+                ArrayList<Post> internPostList = UserInfoActivity.meRandomSubmissions(redditClient);
+                postList.get(sectionNumber).addAll(internPostList);
+                //FIXME postList.addAll(internPostList);
+
+            } else if (sectionNumber == 2) { // GLOBAL
+
+            } else if (sectionNumber == 3) { // COMMUNITY
+
+            }
+
             return null;
         }
 
@@ -131,29 +148,29 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
         protected void onPostExecute(Void param) {
             adapter.notifyDataSetChanged();
             mShowPosts.setVisibility(View.GONE);
-            loadMorePosts(mView);
+            loadMorePosts(mView, sectionNumber);
 
             if (isLoadMore) {
-                postList.remove(hack);
-                adapter.notifyItemRemoved(postList.size());
+                postList.get(sectionNumber).remove(hack);
+                adapter.notifyItemRemoved(postList.get(sectionNumber).size());
                 adapter.setLoaded();
             }
         }
     }
 
-    private void loadMorePosts(final View view) {
+    private void loadMorePosts(final View view, final int sectionNumber) {
         adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
 
             @Override
             public void onLoadMore() {
 
-                if (postList.size() <= MAX_POSTS_TO_LOAD) {
+                if (postList.get(sectionNumber).size() <= MAX_POSTS_TO_LOAD) {
                     // do this hack to show a progress bar
-                    postList.add(null);
-                    hack = postList.size() - 1;
+                    postList.get(sectionNumber).add(null);
+                    hack = postList.get(sectionNumber).size() - 1;
                     adapter.notifyItemInserted(hack);
 
-                    new MorePostsTask(view, true).execute();
+                    new MorePostsTask(view, true, sectionNumber).execute();
 
                 } else {
                     Log.i(LOG_TAG, "Loading data completed.");
@@ -163,9 +180,9 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
     }
 
     @Override
-    public void onShowDetails(RelativeLayout view, int position) {
+    public void onShowDetails(RelativeLayout view, int position, int tab) {
         Log.i(LOG_TAG, "--------------------onShowDetails " + position);
-        final Post post = postList.get(position);
+        final Post post = postList.get(tab).get(position);
         Intent intent = new Intent(PostCardFragment.this.getContext(), PostActivity.class);
 
         intent.putExtra("id", post.getId());
