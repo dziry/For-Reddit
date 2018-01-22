@@ -136,7 +136,8 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 commentsViewHolder.mlayoutReplies.setVisibility(View.GONE);
 
             } else {
-                commentsViewHolder.mRepliesCount.setText(comment.getRepliesCount());
+                commentsViewHolder.mRepliesCount.setText(comment.getRepliesCountString());
+                commentsViewHolder.mlayoutReplies.setTag(comment.getId());
             }
 
             int level = comment.getMarginLevelCoefficient();

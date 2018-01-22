@@ -222,6 +222,7 @@ public class UserInfoActivity extends AppCompatActivity {
             Log.i(LOG_TAG, "--------------------------------------------------------");
 
             //expandReplies(aCommentNode.getChildren());
+
             fr.upmc.tpdev.beans.Comment comment = new fr.upmc.tpdev.beans.Comment(0);
             comment.setId(commentJraw.getId());
             comment.setAuthor(commentJraw.getAuthor());
@@ -229,6 +230,7 @@ public class UserInfoActivity extends AppCompatActivity {
             comment.setScore(commentJraw.getScore());
             comment.setBody(commentJraw.getBody());
             comment.setRepliesCount(aCommentNode.getChildren().size());
+            comment.setChildren(aCommentNode.getChildren());
 
             comments.add(comment);
         }

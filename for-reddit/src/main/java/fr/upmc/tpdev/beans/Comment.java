@@ -2,6 +2,7 @@ package fr.upmc.tpdev.beans;
 
 import android.support.annotation.NonNull;
 
+import net.dean.jraw.models.CommentNode;
 import net.dean.jraw.models.VoteDirection;
 
 import java.text.DateFormat;
@@ -9,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class Comment {
@@ -22,9 +24,10 @@ public class Comment {
     private String repliesCount;
     private int voteDirection;
     private ArrayList<Comment> replies;
+    private List<CommentNode> children;
     private int marginLevelCoefficient;
 
-    public Comment(int marginLevelCoefficient) {
+    public Comment(@NonNull int marginLevelCoefficient) {
         Calendar c = Calendar.getInstance();
         this.currentTime = c.getTime().getTime();
         this.replies = new ArrayList<>();
@@ -93,6 +96,10 @@ public class Comment {
         return repliesCount;
     }
 
+    public String getRepliesCountString() {
+        return repliesCount + " more " + (repliesCount.equals("1")? "reply" : "replies");
+    }
+
     public int getRepliesCountInt() {
         return (repliesCount != null)? Integer.parseInt(repliesCount) : 0;
     }
@@ -111,6 +118,14 @@ public class Comment {
 
     public int getMarginLevelCoefficient() {
         return marginLevelCoefficient;
+    }
+
+    public void setChildren(List<CommentNode> children) {
+        this.children = children;
+    }
+
+    public List<CommentNode> getChildren() {
+        return children;
     }
 
     public void setMarginLevelCoefficient(int marginLevelCoefficient) {

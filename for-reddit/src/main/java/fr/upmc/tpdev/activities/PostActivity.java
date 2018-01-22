@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
+import net.dean.jraw.models.CommentNode;
 
 import java.util.ArrayList;
 
@@ -164,10 +165,15 @@ public class PostActivity extends AppCompatActivity implements OnCommentClickLis
     }
 
     @Override
-    public void onShowReplies(RelativeLayout view, int position) {
+    public void onShowReplies(RelativeLayout layoutReplies, int position) {
         Log.i(LOG_TAG, "--------position : " + position);
+        Log.i(LOG_TAG, "--------id : " + layoutReplies.getTag());
 
-        Comment comment = new Comment(1);
+        String commentId = (String) layoutReplies.getTag();
+        layoutReplies.setVisibility(View.GONE);
+        expandReplies(commentId, position);
+
+        /*Comment comment = new Comment(1);
         comment.setAuthor("xx");
         //comment.setTime("xx");
         comment.setBody("xx");
@@ -191,6 +197,47 @@ public class PostActivity extends AppCompatActivity implements OnCommentClickLis
         comment2.setReplies(new ArrayList<Comment>());
         comments.add(6, comment2);
 
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
+    }
+
+    private void expandReplies(String commentId, int parentPosition) {
+        Comment comment = getCommentById(commentId);
+
+        if (comment != null) {
+            if (comment.getChildren().size() > 0) {
+
+                int position = 0;
+                for (CommentNode aCommentNode : comment.getChildren()) {
+                    Comment reply = new Comment(comment.getMarginLevelCoefficient() + 1);
+                    net.dean.jraw.models.Comment commentJraw = aCommentNode.getComment();
+
+                    reply.setId(commentJraw.getId());
+                    reply.setAuthor(commentJraw.getAuthor());
+                    reply.setTime(commentJraw.getCreated());
+                    reply.setScore(commentJraw.getScore());
+                    reply.setBody(commentJraw.getBody());
+                    reply.setRepliesCount(aCommentNode.getChildren().size());
+                    reply.setChildren(aCommentNode.getChildren());
+
+                    Log.i(LOG_TAG, "--------RA : " + reply.getAuthor());
+
+                    comments.add(parentPosition + 1 + position, reply);
+                    position++;
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private Comment getCommentById(String commentId) {
+
+        for (Comment comment : comments) {
+            if (comment != null && comment.getId().equals(commentId)) {
+                return comment;
+            }
+        }
+
+        return null;
     }
 }
