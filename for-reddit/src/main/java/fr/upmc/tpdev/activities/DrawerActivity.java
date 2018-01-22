@@ -30,6 +30,7 @@ import fr.upmc.tpdev.adapters.PostCardAdapter;
 import fr.upmc.tpdev.beans.Post;
 import fr.upmc.tpdev.fragments.PostCardFragment;
 
+
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -90,7 +91,6 @@ public class DrawerActivity extends AppCompatActivity
         SparseArray<ArrayList<Post>> postList = new SparseArray<>();
         postList.put(1, new ArrayList<Post>());
         postList.put(2, new ArrayList<Post>());
-        postList.put(3, new ArrayList<Post>());
 
         PostCardAdapter adapter = new PostCardAdapter(recyclerView, postList, 1);
         recyclerView.setAdapter(adapter);
@@ -164,8 +164,16 @@ public class DrawerActivity extends AppCompatActivity
 
         Toast.makeText(getApplicationContext(), "id=" + SUBREDDIT_TAB[id], Toast.LENGTH_SHORT).show();
 
-        /*setTitle("Hello");
+        String subredditName = SUBREDDIT_TAB[id];
+
+        Intent intent = new Intent(DrawerActivity.this, SubredditActivity.class);
+        intent.putExtra("sub", subredditName);
+
+        startActivity(intent);
+
+        /*setTitle(subredditName);
         PostCardFragment fragment = new PostCardFragment();
+
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.content_tabbed, fragment).commit();*/
 
@@ -205,8 +213,8 @@ public class DrawerActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 3 total pages : Home, Global, Gallery
-            return 3;
+            // Show 2 total pages : Home, Global
+            return 2;
         }
     }
 }

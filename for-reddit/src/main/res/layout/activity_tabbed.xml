@@ -44,11 +44,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tab_global" />
 
-            <android.support.design.widget.TabItem
+            <!--<android.support.design.widget.TabItem
                 android:id="@+id/ti_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_gallery" />
+                android:text="@string/tab_gallery" />-->
 
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>

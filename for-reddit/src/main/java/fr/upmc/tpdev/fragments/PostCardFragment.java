@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
@@ -38,7 +39,7 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
 
     private static final String LOG_TAG = "PostCardFragment";
     // The fragment argument representing the section number for this fragment.
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    public static final String ARG_SECTION_NUMBER = "section_number";
 
     private final int MAX_POSTS_TO_LOAD = 150;
 
@@ -49,7 +50,6 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
         postList = new SparseArray<>();
         postList.put(1, new ArrayList<Post>());
         postList.put(2, new ArrayList<Post>());
-        postList.put(3, new ArrayList<Post>());
     }
 
     // Returns a new instance of this fragment for the given section number.
@@ -92,11 +92,7 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
                 break;
 
             case 2: // GLOBAL
-                //new MorePostsTask(view, false, 2).execute();
-                break;
-
-            case 3: // COMMUNITY
-                //todo
+                new MorePostsTask(view, false, 2).execute();
                 break;
 
             default:
@@ -129,17 +125,16 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
         protected Void doInBackground(Void... params) {
 
             RedditClient redditClient = AuthenticationManager.get().getRedditClient();
+            ArrayList<Post> internPostList = new ArrayList<>();
 
             if (sectionNumber == 1) { // HOME
-                ArrayList<Post> internPostList = UserInfoActivity.meRandomSubmissions(redditClient);
-                postList.get(sectionNumber).addAll(internPostList);
-                //FIXME postList.addAll(internPostList);
+                internPostList = UserInfoActivity.meRandomUserSubmissions(redditClient);
 
             } else if (sectionNumber == 2) { // GLOBAL
-
-            } else if (sectionNumber == 3) { // COMMUNITY
-
+                internPostList = UserInfoActivity.meRandomGlobalSubmissions(redditClient);
             }
+
+            postList.get(sectionNumber).addAll(internPostList);
 
             return null;
         }
@@ -180,9 +175,9 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
     }
 
     @Override
-    public void onShowDetails(RelativeLayout view, int position, int tab) {
+    public void onShowDetails(RelativeLayout view, int position, int sectionNumber) {
         Log.i(LOG_TAG, "--------------------onShowDetails " + position);
-        final Post post = postList.get(tab).get(position);
+        final Post post = postList.get(sectionNumber).get(position);
         Intent intent = new Intent(PostCardFragment.this.getContext(), PostActivity.class);
 
         intent.putExtra("id", post.getId());
@@ -202,15 +197,21 @@ public class PostCardFragment extends Fragment implements OnPostCardClickListene
     @Override
     public void onUpvote(ImageView view, int position) {
         Log.i(LOG_TAG, "--------------------onUpvote " + position);
+        Toast.makeText(getContext(), "The wrapper can't handle upVote action yet",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDownvote(ImageView view, int position) {
         Log.i(LOG_TAG, "--------------------onDownvote " + position);
+        Toast.makeText(getContext(), "The wrapper can't handle downVote action yet",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onShare(RelativeLayout view, int position) {
         Log.i(LOG_TAG, "--------------------onShare " + position);
+        Toast.makeText(getContext(), "Share action !",
+                Toast.LENGTH_SHORT).show();
     }
 }

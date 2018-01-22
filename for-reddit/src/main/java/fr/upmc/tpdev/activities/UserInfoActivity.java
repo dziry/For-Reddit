@@ -105,46 +105,92 @@ public class UserInfoActivity extends AppCompatActivity {
         }
     }
 
-    /* get 10 random submissions from the user's subreddits */
-    public static ArrayList<Post> meRandomSubmissions(RedditClient redditClient) {
+    private static final int FEED_SIZE = 5;
+    //private static List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
+    private static List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
+    //private static List<String> userSubreddits = Arrays.asList("gifs", "pics");
+    private static final int USER_SUBREDDITS_SIZE = userSubreddits.size();
+
+    /* get 5 random submissions from the user's subreddits */
+    public static ArrayList<Post> meRandomUserSubmissions(RedditClient redditClient) {
 
         if (redditClient == null) {
             return new ArrayList<>();
         }
 
         ArrayList<Post> posts = new ArrayList<>();
-        //List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
-        //List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
-        List<String> userSubreddits = Arrays.asList("gifs", "pics");
-        final int USER_SUBREDDITS_SIZE = userSubreddits.size();
-        final int FEED_SIZE = 5;
 
         for (int i = 0; i < FEED_SIZE; i++) {
+
             int randomIndex = (int)(Math.random() * USER_SUBREDDITS_SIZE);
             String subredditName = userSubreddits.get(randomIndex);
+
             // API bug : this may throws a null exception
             Submission sub = redditClient.getRandomSubmission(subredditName);
-            Post post = new Post();
-
-            post.setId(sub.getId());
-            post.setUrl(sub.getUrl());
-            post.setSubReddit(subredditName);
-            post.setAuthor(sub.getAuthor());
-            post.setTime(sub.getCreated());
-            post.setTitle(sub.getTitle());
-            post.setContentText(sub.getSelftext());
-            post.setContentThumbnail(sub.getThumbnail());
-            post.setScoreCount(sub.getScore());
-            post.setVoteDirection(sub.getVote());
-            post.setCommentCount(sub.getCommentCount());
-
+            Post post = preparePost(sub);
             posts.add(post);
-
-            Log.i(LOG_TAG, "score = " + sub.getScore());
-            Log.i(LOG_TAG, "id    = " + sub.getId());
         }
 
         return posts;
+    }
+
+    /* get 5 random submissions from global subreddits */
+    public static ArrayList<Post> meRandomGlobalSubmissions(RedditClient redditClient) {
+
+        if (redditClient == null) {
+            return new ArrayList<>();
+        }
+
+        ArrayList<Post> posts = new ArrayList<>();
+
+        for (int i = 0; i < FEED_SIZE; i++) {
+
+            // API bug : this may throws a null exception
+            Submission sub = redditClient.getRandomSubmission();
+            Post post = preparePost(sub);
+            posts.add(post);
+        }
+
+        return posts;
+    }
+
+    /* get 5 random submissions from a specific subreddits */
+    public static ArrayList<Post> meRandomSpecificSubmissions(RedditClient redditClient
+            , String subredditName) {
+
+        if (redditClient == null) {
+            return new ArrayList<>();
+        }
+
+        ArrayList<Post> posts = new ArrayList<>();
+
+        for (int i = 0; i < FEED_SIZE; i++) {
+
+            // API bug : this may throws a null exception
+            Submission sub = redditClient.getRandomSubmission(subredditName);
+            Post post = preparePost(sub);
+            posts.add(post);
+        }
+
+        return posts;
+    }
+
+    private static Post preparePost(Submission sub) {
+        Post post = new Post();
+
+        post.setId(sub.getId());
+        post.setUrl(sub.getUrl());
+        post.setSubReddit(sub.getSubredditName());
+        post.setAuthor(sub.getAuthor());
+        post.setTime(sub.getCreated());
+        post.setTitle(sub.getTitle());
+        post.setContentText(sub.getSelftext());
+        post.setContentThumbnail(sub.getThumbnail());
+        post.setScoreCount(sub.getScore());
+        post.setVoteDirection(sub.getVote());
+        post.setCommentCount(sub.getCommentCount());
+
+        return post;
     }
 
     /*static int index = 0;
