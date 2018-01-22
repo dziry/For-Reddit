@@ -103,8 +103,8 @@ public class PostCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Post post = postList.get(sectionNumber).get(position);
             PostViewHolder postViewHolder = (PostViewHolder) holder;
 
-            postViewHolder.mSubreddit.setText(post.getSubReddit());
-            postViewHolder.mAuthor.setText(post.getAuthor());
+            postViewHolder.mSubreddit.setText(post.getSubRedditString());
+            postViewHolder.mAuthor.setText(post.getAuthorString());
             postViewHolder.mTime.setText(post.getTime());
             postViewHolder.mContent.setText(post.getTitle());
 

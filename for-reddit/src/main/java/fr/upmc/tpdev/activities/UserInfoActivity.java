@@ -116,7 +116,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private static final int FEED_SIZE = 5;
     //private static List<String> userSubreddits = Arrays.asList("funny", "LifeProTips", "pics", "gifs", "news");
-    private static List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
+    private static List<String> userSubreddits = Arrays.asList("funny", "AskReddit", "todayilearned", "science", "worldnews", "pics", "IAmA", "gaming", "videos", "movies", "aww", "Music", "blog", "gifs", "news", "explainlikeimfive", "askscience", "EarthPorn", "books", "television", "mildlyinteresting", "LifeProTips");
+    //private static List<String> userSubreddits = Arrays.asList("IAmA", "nosleep");
     //private static List<String> userSubreddits = Arrays.asList("gifs", "pics");
     private static final int USER_SUBREDDITS_SIZE = userSubreddits.size();
 

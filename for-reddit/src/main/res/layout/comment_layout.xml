@@ -142,18 +142,28 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/tv_dot"
                     android:layout_toEndOf="@id/tv_dot"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
                     android:textSize="12sp"
                     android:text="6h"/>
 
-                <!-- TODO Remove this and layout_toRightOf, layout_marginEnd -->
                 <TextView
-                    android:id="@+id/tv_score"
+                    android:id="@+id/tv_dot2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/tv_time"
                     android:layout_toEndOf="@id/tv_time"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="12sp"
+                    android:text="."/>
+
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_dot2"
+                    android:layout_toEndOf="@id/tv_dot2"
                     android:textSize="12sp"
                     android:text="123 points"/>
             </RelativeLayout>
@@ -164,8 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_header"
-                android:layout_marginBottom="8dp"
-                android:text="bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"/>
+                android:layout_marginBottom="8dp"/>
 
             <!-- Footer -->
             <RelativeLayout

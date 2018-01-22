@@ -28,8 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_header"
-                android:padding="8dp"
-                android:background="@android:color/holo_blue_dark">
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/tv_title"
@@ -39,6 +38,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:paddingBottom="8dp"
+                    android:textStyle="bold"
                     android:text="Title"/>
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_title"
                     android:padding="8dp"
-                    android:background="@color/colorAccent"
+                    android:background="@color/colorPrimary"
                     android:visibility="gone">
 
                     <TextView

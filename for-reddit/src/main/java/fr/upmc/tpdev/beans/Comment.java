@@ -48,12 +48,20 @@ public class Comment {
         return author;
     }
 
+    public String getAuthorString() {
+        return "u/" + author;
+    }
+
     public void setAuthor(String author) {
         this.author = author;
     }
 
     public String getTime() {
         return time;
+    }
+
+    public String getTimeString() {
+        return time + "h";
     }
 
     public void setTime(@NonNull Date time) {
@@ -72,6 +80,9 @@ public class Comment {
 
     public String getScore() {
         return score;
+    }
+    public String getScoreString() {
+        return score + " points";
     }
 
     public void setScore(int score) {

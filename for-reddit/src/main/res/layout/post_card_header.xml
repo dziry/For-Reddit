@@ -5,9 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:paddingRight="8dp"
-    android:paddingLeft="8dp"
-    android:paddingBottom="8dp"
-    android:background="@android:color/darker_gray">
+    android:paddingLeft="8dp">
 
     <TextView
         android:id="@+id/tv_subreddit"
@@ -51,9 +49,10 @@
         android:textSize="12sp"
         android:text="6h"/>
 
-    <!--<View
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/rl_header"
-        android:background="@color/colorAccent"/>-->
+        android:layout_below="@id/tv_op"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"/>
 </RelativeLayout>

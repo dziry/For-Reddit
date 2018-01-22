@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,26 +7,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="fr.upmc.tpdev.activities.MainActivity"
-    android:orientation="vertical">
+    tools:context="fr.upmc.tpdev.activities.MainActivity">
 
     <TextView
         android:id="@+id/tv_welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello"/>
+        android:layout_centerInParent="true"
+        android:text="@string/welcome"/>
 
     <Button
         android:text="Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:background="@color/colorPrimaryDark"
         android:onClick="login" />
 
-    <Button
+    <!--<Button
         android:text="User information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="userInfo" />
+        android:onClick="userInfo" />-->
 
     <!--<Button
         android:text="Drawer"
@@ -46,4 +49,4 @@
         android:layout_height="wrap_content"
         android:onClick="details" />-->
 
-</LinearLayout>
+</RelativeLayout>

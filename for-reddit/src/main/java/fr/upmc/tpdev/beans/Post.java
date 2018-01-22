@@ -58,12 +58,20 @@ public class Post {
         return subReddit;
     }
 
+    public String getSubRedditString() {
+        return "r/" + subReddit;
+    }
+
     public void setSubReddit(String subReddit) {
         this.subReddit = subReddit;
     }
 
     public String getAuthor() {
         return author;
+    }
+
+    public String getAuthorString() {
+        return "u/" + author;
     }
 
     public void setAuthor(String author) {

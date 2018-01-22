@@ -129,10 +129,10 @@ public class PostDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             PostDetailsAdapter.CommentsViewHolder commentsViewHolder =
                     (PostDetailsAdapter.CommentsViewHolder) holder;
 
-            commentsViewHolder.mAuthor.setText(comment.getAuthor());
-            commentsViewHolder.mTime.setText(comment.getTime());
+            commentsViewHolder.mAuthor.setText(comment.getAuthorString());
+            commentsViewHolder.mTime.setText(comment.getTimeString());
             commentsViewHolder.mBody.setText(comment.getBody());
-            commentsViewHolder.mScore.setText(comment.getScore());
+            commentsViewHolder.mScore.setText(comment.getScoreString());
 
             if (comment.getRepliesCountInt() <= 0) {
                 commentsViewHolder.mlayoutReplies.setVisibility(View.GONE);
